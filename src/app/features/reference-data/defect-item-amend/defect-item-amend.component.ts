@@ -2,6 +2,7 @@ import { ButtonGroupComponent } from '@/src/app/components/button-group/button-g
 import { ButtonComponent } from '@/src/app/components/button/button.component';
 import { GlobalErrorService } from '@/src/app/core/components/global-error/global-error.service';
 import { RoleRequiredDirective } from '@/src/app/directives/app-role-required/app-role-required.directive';
+import { GovukCheckboxGroupComponent } from '@/src/app/forms/components/govuk-checkbox-group/govuk-checkbox-group.component';
 import { GovukFormGroupInputComponent } from '@/src/app/forms/components/govuk-form-group-input/govuk-form-group-input.component';
 import { GovukFormGroupTextareaComponent } from '@/src/app/forms/components/govuk-form-group-textarea/govuk-form-group-textarea.component';
 import { CommonValidatorsService } from '@/src/app/forms/validators/common-validators.service';
@@ -11,6 +12,7 @@ import { Component, effect, inject } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { DEFECT_VEHICLE_TYPE_OPTIONS } from '../defect-vehicle-types';
 
 @Component({
 	selector: 'app-defect-item-amend',
@@ -21,6 +23,7 @@ import { Store } from '@ngrx/store';
 		ReactiveFormsModule,
 		GovukFormGroupInputComponent,
 		GovukFormGroupTextareaComponent,
+		GovukCheckboxGroupComponent,
 		ButtonComponent,
 		ButtonGroupComponent,
 		RoleRequiredDirective,
@@ -49,15 +52,21 @@ export class DefectItemAmendComponent {
 			this.validators.required('Welsh description'),
 			this.validators.maxLength(4096, 'Welsh description'),
 		]),
+		forVehicleType: this.fb.nonNullable.control<string[]>([]),
 	});
 
 	roles = Roles;
+	vehicleTypeOptions = DEFECT_VEHICLE_TYPE_OPTIONS;
 
 	constructor() {
 		effect(() => {
 			const defectItem = this.defectItem();
 			if (!defectItem) return;
-			this.form.patchValue(defectItem as any);
+			this.form.patchValue({
+				...defectItem,
+				itemNumber: defectItem.itemNumber?.toString() ?? null,
+				forVehicleType: defectItem.forVehicleType ?? [],
+			});
 		});
 	}
 

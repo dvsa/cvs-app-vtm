@@ -4,15 +4,16 @@ import {
 	ChangeDetectorRef,
 	Component,
 	ContentChildren,
+	DestroyRef,
 	OnInit,
 	QueryList,
 	inject,
 	input,
 	model,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Actions, ofType } from '@ngrx/effects';
 import { addSectionStateFromGlobalError } from '@store/technical-records';
-import { Subject, takeUntil } from 'rxjs';
 import { AccordionComponent } from '../accordion/accordion.component';
 
 @Component({
@@ -25,14 +26,15 @@ import { AccordionComponent } from '../accordion/accordion.component';
 export class AccordionControlComponent implements OnInit {
 	cdr = inject(ChangeDetectorRef);
 	actions$ = inject(Actions);
+	destroyRef = inject(DestroyRef);
 
 	private accordionsList?: QueryList<AccordionComponent>;
-	private destroy$ = new Subject<void>();
-
 	ngOnInit() {
-		this.actions$.pipe(ofType(addSectionStateFromGlobalError), takeUntil(this.destroy$)).subscribe(({ section }) => {
-			this.openAccordionById(section);
-		});
+		this.actions$
+			.pipe(ofType(addSectionStateFromGlobalError), takeUntilDestroyed(this.destroyRef))
+			.subscribe(({ section }) => {
+				this.openAccordionById(section);
+			});
 	}
 
 	get accordions(): QueryList<AccordionComponent> | undefined {

@@ -2,6 +2,7 @@ import { ButtonGroupComponent } from '@/src/app/components/button-group/button-g
 import { ButtonComponent } from '@/src/app/components/button/button.component';
 import { GlobalErrorService } from '@/src/app/core/components/global-error/global-error.service';
 import { RoleRequiredDirective } from '@/src/app/directives/app-role-required/app-role-required.directive';
+import { GovukCheckboxGroupComponent } from '@/src/app/forms/components/govuk-checkbox-group/govuk-checkbox-group.component';
 import { GovukFormGroupCheckboxComponent } from '@/src/app/forms/components/govuk-form-group-checkbox/govuk-form-group-checkbox.component';
 import { GovukFormGroupInputComponent } from '@/src/app/forms/components/govuk-form-group-input/govuk-form-group-input.component';
 import { GovukFormGroupSelectComponent } from '@/src/app/forms/components/govuk-form-group-select/govuk-form-group-select.component';
@@ -18,6 +19,7 @@ import { Component, effect, inject } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { DEFECT_VEHICLE_TYPE_OPTIONS } from '../defect-vehicle-types';
 
 @Component({
 	selector: 'app-defect-deficiency-amend',
@@ -30,6 +32,7 @@ import { Store } from '@ngrx/store';
 		GovukFormGroupTextareaComponent,
 		GovukFormGroupSelectComponent,
 		GovukFormGroupCheckboxComponent,
+		GovukCheckboxGroupComponent,
 		ButtonGroupComponent,
 		ButtonComponent,
 		RoleRequiredDirective,
@@ -64,6 +67,7 @@ export class DefectDeficiencyAmendComponent {
 		]),
 		deficiencyCategory: this.fb.control<string | null>(null),
 		stdForProhibition: this.fb.control<boolean>(false),
+		forVehicleType: this.fb.nonNullable.control<string[]>([]),
 	});
 
 	deficiencyCategoryOptions: MultiOptions = [
@@ -74,17 +78,17 @@ export class DefectDeficiencyAmendComponent {
 	];
 
 	roles = Roles;
-	vehicleTypeOptions: MultiOptions = [
-		{ label: 'PSV', value: 'psv' },
-		{ label: 'HGV', value: 'hgv' },
-		{ label: 'TRL', value: 'trl' },
-	];
+	vehicleTypeOptions = DEFECT_VEHICLE_TYPE_OPTIONS;
 
 	constructor() {
 		effect(() => {
 			const deficiency = this.defectDeficiency();
 			if (!deficiency) return;
-			this.form.patchValue(deficiency);
+			this.form.patchValue({
+				...deficiency,
+				forVehicleType:
+					typeof deficiency.forVehicleType === 'string' ? [deficiency.forVehicleType] : deficiency.forVehicleType,
+			});
 		});
 	}
 

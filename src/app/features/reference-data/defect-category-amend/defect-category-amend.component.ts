@@ -2,17 +2,22 @@ import { ButtonGroupComponent } from '@/src/app/components/button-group/button-g
 import { ButtonComponent } from '@/src/app/components/button/button.component';
 import { GlobalErrorService } from '@/src/app/core/components/global-error/global-error.service';
 import { RoleRequiredDirective } from '@/src/app/directives/app-role-required/app-role-required.directive';
-import { GovukCheckboxGroupComponent } from '@/src/app/forms/components/govuk-checkbox-group/govuk-checkbox-group.component';
 import { GovukFormGroupInputComponent } from '@/src/app/forms/components/govuk-form-group-input/govuk-form-group-input.component';
 import { GovukFormGroupTextareaComponent } from '@/src/app/forms/components/govuk-form-group-textarea/govuk-form-group-textarea.component';
 import { CommonValidatorsService } from '@/src/app/forms/validators/common-validators.service';
-import { MultiOptions } from '@/src/app/models/options.model';
 import { Roles } from '@/src/app/models/roles.enum';
 import { selectDefectCategoryFromRoute } from '@/src/app/store/defects';
 import { Component, effect, inject } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
+import {
+	DefectCategoryAdditionalInfoComponent,
+	createAdditionalInfoForm,
+	includeVehiclesWithAdditionalInfo,
+	populateAdditionalInfo,
+	serialiseAdditionalInfo,
+} from '../defect-category-additional-info/defect-category-additional-info.component';
 
 @Component({
 	selector: 'app-defect-category-amend',
@@ -23,10 +28,10 @@ import { Store } from '@ngrx/store';
 		ReactiveFormsModule,
 		GovukFormGroupInputComponent,
 		GovukFormGroupTextareaComponent,
-		GovukCheckboxGroupComponent,
 		RoleRequiredDirective,
 		ButtonComponent,
 		ButtonGroupComponent,
+		DefectCategoryAdditionalInfoComponent,
 	],
 })
 export class DefectCategoryAmendComponent {
@@ -37,6 +42,7 @@ export class DefectCategoryAmendComponent {
 	validators = inject(CommonValidatorsService);
 	errorService = inject(GlobalErrorService);
 	defectCategory = this.store.selectSignal(selectDefectCategoryFromRoute);
+	vehicleTypes = this.fb.nonNullable.control<string[]>([]);
 
 	form = this.fb.group({
 		imNumber: this.fb.control<number | null>(null, [this.validators.required('IM number')]),
@@ -48,22 +54,30 @@ export class DefectCategoryAmendComponent {
 			this.validators.required('Welsh description'),
 			this.validators.maxLength(4096, 'Welsh description'),
 		]),
-		forVehicleType: this.fb.nonNullable.control<string[]>([]),
+		forVehicleType: this.vehicleTypes,
+		additionalInfo: createAdditionalInfoForm(this.fb, this.vehicleTypes),
 	});
 
 	roles = Roles;
-	vehicleTypeOptions: MultiOptions = [
-		{ label: 'PSV', value: 'psv' },
-		{ label: 'HGV', value: 'hgv' },
-		{ label: 'TRL', value: 'trl' },
-	];
-
 	constructor() {
 		effect(() => {
 			const defectCategory = this.defectCategory();
 			if (!defectCategory) return;
-			this.form.patchValue(defectCategory);
+			const { additionalInfo, ...categoryFields } = defectCategory;
+			this.form.patchValue({
+				...categoryFields,
+				forVehicleType: includeVehiclesWithAdditionalInfo(categoryFields.forVehicleType, additionalInfo),
+			});
+			populateAdditionalInfo(this.form.controls.additionalInfo, additionalInfo);
 		});
+	}
+
+	getFormValue() {
+		const { additionalInfo, ...category } = this.form.getRawValue();
+		return {
+			...category,
+			additionalInfo: serialiseAdditionalInfo(this.form.controls.additionalInfo, category.forVehicleType),
+		};
 	}
 
 	handleSubmit() {

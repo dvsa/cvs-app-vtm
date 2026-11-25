@@ -1,0 +1,46 @@
+<div [formGroup]="form()">
+  <h2 class="govuk-heading-m">Additional information</h2>
+  <govuk-checkbox-group
+    [formControl]="vehicleTypes()"
+    label="For vehicle type"
+    [options]="vehicles"
+    id="forVehicleType"
+  ></govuk-checkbox-group>
+
+  <div [hidden]="form().disabled">
+    <app-accordion-control [sectionState]="null">
+      @for (vehicle of vehicles; track vehicle.value) {
+        @if (vehicleTypes().value.includes(vehicle.value)) {
+          <app-accordion [id]="'additional-info-' + vehicle.value" [title]="vehicle.label + ' additional information'">
+            <section [formGroupName]="vehicle.value">
+              <govuk-form-group-checkbox
+                formControlName="notes"
+                [id]="vehicle.value + '-notes'"
+                label="Notes"
+              ></govuk-form-group-checkbox>
+
+              @for (direction of directions; track direction.name) {
+                <govuk-checkbox-group
+                  [formControlName]="direction.name"
+                  [id]="vehicle.value + '-' + direction.name"
+                  [label]="direction.label"
+                  [options]="direction.options"
+                ></govuk-checkbox-group>
+              }
+
+              @for (number of numbers; track number.name) {
+                <govuk-form-group-input
+                  [formControlName]="number.name"
+                  [id]="vehicle.value + '-' + number.name"
+                  [label]="number.label"
+                  [hint]="'Enter a whole number between 1 and ' + number.maximum + ', or leave blank.'"
+                  type="number"
+                ></govuk-form-group-input>
+              }
+            </section>
+          </app-accordion>
+        }
+      }
+    </app-accordion-control>
+  </div>
+</div>

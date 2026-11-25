@@ -30,13 +30,7 @@
         [maxLength]="4096"
       ></govuk-form-group-textarea>
 
-      <!-- For Vehicle Type -->
-      <govuk-checkbox-group
-        formControlName="forVehicleType"
-        label="For Vehicle Type"
-        name="forVehicleType"
-        [options]="vehicleTypeOptions"
-      ></govuk-checkbox-group>
+      <app-defect-category-additional-info [form]="form.controls.additionalInfo" [vehicleTypes]="form.controls.forVehicleType"></app-defect-category-additional-info>
 
       <app-button-group>
         <app-button id="submit" (clicked)="handleSubmit()">Amend</app-button>  

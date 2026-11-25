@@ -30,6 +30,12 @@
         [maxLength]="4096"
       ></govuk-form-group-textarea>
 
+      <govuk-checkbox-group
+        formControlName="forVehicleType"
+        label="For vehicle type"
+        [options]="vehicleTypeOptions"
+      ></govuk-checkbox-group>
+
       <app-button-group>
         <app-button id="submit" (clicked)="handleSubmit()">Amend</app-button>  
         <app-button id="cancel" design="link" (clicked)="handleCancel()">Cancel</app-button>
