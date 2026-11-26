@@ -24,7 +24,7 @@ const hgvTechRecord: TechRecordType<'hgv', 'put'> = {
 	techRecord_statusCode: 'provisional',
 	techRecord_vehicleClass_description: 'heavy goods vehicle',
 	primaryVrm: '',
-	vin: '',
+	vin: 'TESTVIN123',
 	techRecord_adrDetails_dangerousGoods: false,
 };
 
@@ -52,13 +52,25 @@ describe('DuplicateVinComponent', () => {
 		component = fixture.componentInstance;
 
 		store.overrideSelector(editingTechRecord, hgvTechRecord);
-
-		fixture.detectChanges();
 	});
 
 	describe('component', () => {
-		it('should create', () => {
+		it('should display the VIN without redirecting when an editing record exists', () => {
+			const navigateSpy = vi.spyOn(router, 'navigate');
+			fixture.detectChanges();
 			expect(component).toBeTruthy();
+			expect(fixture.nativeElement.textContent).toContain('TESTVIN123');
+			expect(navigateSpy).not.toHaveBeenCalled();
+		});
+
+		it('should navigate back when there is no editing record', () => {
+			store.overrideSelector(editingTechRecord, undefined);
+			store.refreshState();
+			const navigateSpy = vi.spyOn(router, 'navigate').mockResolvedValue(true);
+
+			fixture.detectChanges();
+
+			expect(navigateSpy).toHaveBeenCalledWith(['..'], { relativeTo: component.route });
 		});
 	});
 

@@ -7,7 +7,7 @@
     <p class="govuk-body">A technical record already exists with this VIN:</p>
 
     <div class="govuk-inset-text govuk-!-font-weight-bold">
-      {{ techRecord().vin | uppercase }}
+      {{ techRecord()?.vin | uppercase }}
     </div>
 
     <p class="govuk-body">
