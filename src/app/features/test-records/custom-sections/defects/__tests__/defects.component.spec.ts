@@ -26,7 +26,7 @@ describe('DefectsComponent', () => {
 
 		fixture = TestBed.createComponent(DefectsComponent);
 		component = fixture.componentInstance;
-		fixture.componentRef.setInput('mode', Modes.EDIT);
+		component.testService.mode.set(Modes.EDIT);
 		fixture.detectChanges();
 	});
 

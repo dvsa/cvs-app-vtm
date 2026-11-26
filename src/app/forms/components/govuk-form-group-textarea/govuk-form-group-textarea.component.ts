@@ -43,7 +43,8 @@ export class GovukFormGroupTextareaComponent extends GovukFormGroupBaseComponent
 		map(() => this.getCharacterCountMessage())
 	);
 
-	readonly maxLength = input<number | null>(null);
+	// Bound by `[formField]` from the field's max length rule, or set directly for reactive form controls.
+	readonly maxLength = input<number | null | undefined>(null);
 
 	writeValue(obj: any): void {
 		this.value.set(obj);

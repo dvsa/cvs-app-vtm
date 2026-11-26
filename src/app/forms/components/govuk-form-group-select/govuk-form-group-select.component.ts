@@ -22,7 +22,7 @@ export class GovukFormGroupSelectComponent extends GovukFormGroupBaseComponent i
 	readonly blur = output<FocusEvent>();
 	readonly focus = output<FocusEvent>();
 
-	value = model<string | number | boolean | null>(null);
+	value = model<unknown>(null);
 
 	readonly options = input.required<MultiOptions>();
 

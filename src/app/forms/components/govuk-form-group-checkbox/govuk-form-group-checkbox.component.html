@@ -24,9 +24,7 @@
       @if (firstError) {
         <p class="govuk-error-message" [id]="errorId">
           <span class="govuk-visually-hidden">Error: </span>
-          <span>{{
-            typeof firstError === 'string' ? firstError : firstError.error
-          }}</span>
+          <span>{{ validationErrorMessage(firstError) }}</span>
         </p>
       }
     }

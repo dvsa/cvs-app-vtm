@@ -11,7 +11,13 @@ import {
 	model,
 	output,
 } from '@angular/core';
-import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import {
+	AbstractControl,
+	ControlValueAccessor,
+	FormsModule,
+	NG_VALUE_ACCESSOR,
+	ReactiveFormsModule,
+} from '@angular/forms';
 import { ACCESSIBLE_AUTOCOMPLETE_LOADER } from '@forms/components/autocomplete/load-accessible-autocomplete';
 import { GovukFormGroupBaseComponent } from '@forms/components/govuk-form-group-base/govuk-form-group-base.component';
 import { MultiOptions } from '@models/options.model';
@@ -34,6 +40,8 @@ export class GovukFormGroupAutocompleteComponent
 	readonly blur = output<FocusEvent>();
 
 	readonly focus = output<FocusEvent>();
+
+	readonly optionSelected = output<string | number | boolean | null>();
 
 	value = model<string | number | boolean | null>(null);
 
@@ -140,14 +148,9 @@ export class GovukFormGroupAutocompleteComponent
 
 	handleChangeForOption(value: string) {
 		const optionValue = this.findOptionValue(value);
-
-		if (this.allowEmpty() && !optionValue) {
-			// default empty values to null
-			this.onChange(null);
-		} else {
-			this.onChange(optionValue ?? '[INVALID_OPTION]');
-		}
-
+		const selected = this.allowEmpty() && !optionValue ? null : (optionValue ?? '[INVALID_OPTION]');
+		this.onChange(selected);
+		this.optionSelected.emit(selected);
 		this.onTouched();
 	}
 
@@ -156,6 +159,9 @@ export class GovukFormGroupAutocompleteComponent
 	}
 
 	addValidators() {
-		this.control?.addValidators(this.commonValidators.invalidOption(`${this.controlLabel()} is invalid`));
+		const control = this.control;
+		// Signal form fields own their validation in their schema.
+		if (!(control instanceof AbstractControl)) return;
+		control.addValidators(this.commonValidators.invalidOption(`${this.controlLabel()} is invalid`));
 	}
 }

@@ -1,6 +1,8 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup, ValidationErrors } from '@angular/forms';
+import { FieldTree } from '@angular/forms/signals';
+import { validationErrorMessage } from '@forms/utils/validation-error-message';
 import { Store, select } from '@ngrx/store';
 import { globalErrorState } from '@store/global-error/global-error-service.reducer';
 import { addError, clearError, patchErrors, setErrors } from '@store/global-error/global-error.actions';
@@ -98,7 +100,7 @@ export class GlobalErrorService {
 				if (control.invalid && control.errors) {
 					Object.values(control.errors).forEach((error) => {
 						errors.push({
-							error: typeof error === 'string' ? error : error.error,
+							error: validationErrorMessage(error),
 							anchorLink: typeof error === 'string' || !error.anchorLink ? key : error.anchorLink,
 							accordion: error.accordion ?? undefined,
 						});
@@ -115,7 +117,7 @@ export class GlobalErrorService {
 					const firstError = controlErrors[0];
 					for (const error of Array.isArray(firstError) ? firstError : [firstError]) {
 						errors.push({
-							error: typeof error === 'string' ? error : error.error,
+							error: validationErrorMessage(error),
 							anchorLink: typeof error === 'string' || !error.anchorLink ? key : error.anchorLink,
 							accordion: error.accordion ?? undefined,
 						});
@@ -126,6 +128,24 @@ export class GlobalErrorService {
 
 		return errors;
 	};
+
+	/**
+	 * Collects the first error of each invalid field in a signal form. Fields that are hidden, disabled or
+	 * read-only are not validated, so they report no errors.
+	 */
+	extractSignalFormErrors(
+		form: FieldTree<unknown>,
+		anchorFor: (field: FieldTree<unknown>) => string = (field) => String(field().keyInParent())
+	): GlobalError[] {
+		const fields = new Set<unknown>();
+		return form()
+			.errorSummary()
+			.filter(({ fieldTree }) => !fields.has(fieldTree) && fields.add(fieldTree))
+			.map((error) => ({
+				error: validationErrorMessage(error),
+				anchorLink: anchorFor(error.fieldTree as FieldTree<unknown>),
+			}));
+	}
 
 	extractGlobalErrorsFromErrorResponse(e: HttpErrorResponse) {
 		const errors: GlobalError[] = [];

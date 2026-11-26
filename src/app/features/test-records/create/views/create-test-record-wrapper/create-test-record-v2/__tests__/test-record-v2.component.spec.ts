@@ -16,10 +16,11 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { ResultOfTestService } from '@services/result-of-test/result-of-test.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { TestService } from '@services/test/test.service';
-import { Observable, ReplaySubject } from 'rxjs';
+import { EMPTY, Observable, ReplaySubject } from 'rxjs';
 import { TestRecordV2Component } from '../test-record-v2.component';
 
 const MockUserService = {
+	roles$: EMPTY,
 	getUserName$: vi.fn().mockReturnValue(new Observable()),
 };
 
@@ -50,6 +51,8 @@ describe('TestRecordV2Component', () => {
 		testRecordsService = TestBed.inject(TestRecordsService);
 		testService = TestBed.inject(TestService);
 		testService.isAbandoning.set(false);
+		testService.initialMode.set(Modes.EDIT);
+		testService.mode.set(Modes.EDIT);
 		fixture = TestBed.createComponent(TestRecordV2Component);
 		component = fixture.componentInstance;
 	});
@@ -59,7 +62,7 @@ describe('TestRecordV2Component', () => {
 	});
 
 	it('should initialise the selected test type when the create page opens', () => {
-		fixture.componentRef.setInput('initialMode', Modes.EDIT);
+		testService.initialMode.set(Modes.EDIT);
 		vi.spyOn(component as never, 'testTypeId').mockReturnValue('94');
 		const selectSpy = vi.spyOn(testRecordsService, 'contingencyTestTypeSelected').mockImplementation();
 
@@ -72,7 +75,7 @@ describe('TestRecordV2Component', () => {
 	it('should apply recalls prefetched by the v2 search flow when the create page opens', () => {
 		const vin = '12345678901234567';
 		const recalls = { hasRecall: true, manufacturer: 'Ford' };
-		fixture.componentRef.setInput('initialMode', Modes.EDIT);
+		testService.initialMode.set(Modes.EDIT);
 		vi.spyOn(component as never, 'testTypeId').mockReturnValue('94');
 		vi.spyOn(testRecordsService, 'contingencyTestTypeSelected').mockImplementation();
 		store.overrideSelector(techRecord, { vin } as never);
@@ -81,7 +84,7 @@ describe('TestRecordV2Component', () => {
 
 		component.ngOnInit();
 
-		expect(component.form.controls.recalls.value).toEqual(recalls);
+		expect(component.form.recalls().value()).toEqual(recalls);
 		expect(dispatchSpy).toHaveBeenCalledWith(patchEditingTestResult({ testResult: { recalls } }));
 	});
 
@@ -102,21 +105,22 @@ describe('TestRecordV2Component', () => {
 		} as TestResultSchema;
 
 		beforeEach(() => {
-			fixture.componentRef.setInput('initialMode', Modes.AMEND);
+			testService.initialMode.set(Modes.AMEND);
+			testService.mode.set(Modes.AMEND);
 			vi.spyOn(component as never, 'testResult').mockReturnValue(existingTest as never);
 			vi.spyOn(component as never, 'testResultInEdit').mockReturnValue(existingTest as never);
 			vi.spyOn(component as never, 'testTypeId').mockReturnValue('65' as never);
 			vi.spyOn(component as never, 'testType').mockReturnValue({ id: '65', name: 'Paid first test retest' } as never);
 			// `testTypeIdChanged` blanks the shared form via an effect; emulate that side effect here.
 			vi.spyOn(testRecordsService, 'testTypeChange').mockImplementation(() => {
-				component.form.reset(undefined, { emitEvent: false });
+				testService.resetForm();
 			});
 		});
 
 		it('should keep the existing test details once the shared form has been reset', () => {
 			component.ngOnInit();
 
-			const value = component.form.getRawValue();
+			const value = testService.value();
 			expect(value.vin).toBe('VIN00000001');
 			expect(value.testTypes[0].testNumber).toBe('T12345678');
 			expect(value.testTypes[0].testCode).toBe('FFV2');
@@ -127,7 +131,7 @@ describe('TestRecordV2Component', () => {
 		it('should stamp the newly selected test type onto the form', () => {
 			component.ngOnInit();
 
-			const testType = component.form.controls.testTypes.at(0).getRawValue();
+			const testType = testService.value().testTypes[0];
 			expect(testType.testTypeId).toBe('65');
 			expect(testType.testTypeName).toBe('Paid first test retest');
 			expect(testType.name).toBe('Paid first test retest');
@@ -145,21 +149,138 @@ describe('TestRecordV2Component', () => {
 		});
 	});
 
+	describe('store mirror', () => {
+		it.each([Modes.EDIT, Modes.AMEND])('debounces the latest form value in %s mode', (mode) => {
+			vi.useFakeTimers();
+			try {
+				testService.mode.set(mode);
+				vi.spyOn(component as never, 'testResultInEdit').mockReturnValue({ testTypes: [{}] } as never);
+				const updateSpy = vi.spyOn(testRecordsService, 'updateEditingTestResult');
+				fixture.detectChanges();
+				TestBed.flushEffects();
+				vi.advanceTimersByTime(100);
+				updateSpy.mockClear();
+
+				testService.patch({ reasonForCreation: 'First' });
+				TestBed.flushEffects();
+				vi.advanceTimersByTime(99);
+				expect(updateSpy).not.toHaveBeenCalled();
+				testService.patch({ reasonForCreation: 'Latest' });
+				TestBed.flushEffects();
+				vi.advanceTimersByTime(99);
+				expect(updateSpy).not.toHaveBeenCalled();
+				vi.advanceTimersByTime(1);
+				expect(updateSpy).toHaveBeenCalledTimes(1);
+				expect(updateSpy).toHaveBeenCalledWith(expect.objectContaining({ reasonForCreation: 'Latest' }));
+			} finally {
+				vi.useRealTimers();
+			}
+		});
+
+		it.each([
+			[Modes.EDIT, false],
+			[Modes.AMEND, false],
+			[Modes.SUMMARY, true],
+			[Modes.ABANDON, true],
+			[Modes.VIEW, true],
+		])('does not mirror in %s mode with editing result present: %s', (mode, hasEditingResult) => {
+			vi.useFakeTimers();
+			try {
+				testService.mode.set(mode);
+				vi.spyOn(component as never, 'testResultInEdit').mockReturnValue(
+					(hasEditingResult ? { testTypes: [{}] } : undefined) as never
+				);
+				const updateSpy = vi.spyOn(testRecordsService, 'updateEditingTestResult');
+				fixture.detectChanges();
+				testService.patch({ reasonForCreation: 'Not mirrored' });
+				TestBed.flushEffects();
+				vi.advanceTimersByTime(100);
+				expect(updateSpy).not.toHaveBeenCalled();
+			} finally {
+				vi.useRealTimers();
+			}
+		});
+	});
+
 	describe('onReview', () => {
-		it('should set mode to SUMMARY when form is valid', () => {
-			component.form.controls.testTypes.at(0).controls.testResult.setValue(TestResults.FAIL);
-			vi.spyOn(component.form, 'markAllAsTouched');
-			Object.defineProperty(component.form, 'valid', { get: () => true });
+		const populateReviewFields = () => {
+			testService.initialMode.set(Modes.EDIT);
+			testService.mode.set(Modes.EDIT);
+			testService.patch({
+				contingencyTestNumber: '123456',
+				countryOfRegistration: 'gb',
+				euVehicleCategory: 'm1',
+				odometerReading: 100,
+				odometerReadingUnits: 'miles',
+				reasonForCreation: 'Reason for creating the test',
+				testStationPNumber: 'P12345',
+				testerStaffId: '12345',
+				testTypes: [
+					{
+						testTypeStartTimestamp: '2025-01-01T10:00:00.000Z',
+						testTypeEndTimestamp: '2025-01-01T10:30:00.000Z',
+					},
+				],
+			});
+		};
+
+		it('blocks review for an empty signal reason and allows it after correction', () => {
+			populateReviewFields();
+			component.form.reasonForCreation().value.set('');
+			const setErrors = vi.spyOn(TestBed.inject(GlobalErrorService), 'setErrors');
 
 			component.onReview();
 
-			expect(component.form.markAllAsTouched).toHaveBeenCalled();
-			expect(component.mode()).toBe(Modes.SUMMARY);
+			expect(testService.mode()).toBe(Modes.EDIT);
+			expect(setErrors).toHaveBeenCalledWith(
+				expect.arrayContaining([
+					expect.objectContaining({ error: 'Reason for creation is required', anchorLink: 'reasonForCreation' }),
+				])
+			);
+
+			component.form.reasonForCreation().value.set('Reason for creating the test');
+			component.onReview();
+			expect(testService.mode()).toBe(Modes.SUMMARY);
+		});
+
+		it('keeps contingency number validation active when reviewing a new test', () => {
+			populateReviewFields();
+			component.form.contingencyTestNumber().value.set('12345');
+			const setErrors = vi.spyOn(TestBed.inject(GlobalErrorService), 'setErrors');
+
+			component.onReview();
+
+			expect(testService.mode()).toBe(Modes.EDIT);
+			expect(setErrors).toHaveBeenCalledWith(
+				expect.arrayContaining([
+					{
+						error: 'Contingency Test Number must be greater than or equal to 6 characters',
+						anchorLink: 'contingencyTestNumber',
+					},
+				])
+			);
+
+			component.form.contingencyTestNumber().value.set('01234567');
+			component.onReview();
+
+			expect(testService.mode()).toBe(Modes.SUMMARY);
+			expect(testService.value().contingencyTestNumber).toBe('01234567');
+		});
+
+		it('should set mode to SUMMARY when form is valid', () => {
+			testService.testType.testResult().value.set(TestResults.FAIL);
+			const markAsTouchedSpy = vi.spyOn(component.form(), 'markAsTouched');
+			vi.spyOn(TestBed.inject(GlobalErrorService), 'extractSignalFormErrors').mockReturnValue([]);
+
+			component.onReview();
+
+			expect(markAsTouchedSpy).toHaveBeenCalled();
+			expect(testService.mode()).toBe(Modes.SUMMARY);
 		});
 
 		it('should set global errors when form has validation errors', () => {
 			const globalErrorService = TestBed.inject(GlobalErrorService);
-			vi.spyOn(globalErrorService, 'extractGlobalErrors').mockReturnValue([
+			vi.spyOn(globalErrorService, 'extractSignalFormErrors').mockReturnValue([
 				{ error: 'Test error', anchorLink: 'testField' },
 			]);
 			const setErrorsSpy = vi.spyOn(globalErrorService, 'setErrors');
@@ -173,8 +294,8 @@ describe('TestRecordV2Component', () => {
 			store.overrideSelector(techRecord, { techRecord_statusCode: StatusCodes.PROVISIONAL } as any);
 			store.refreshState();
 
-			component.form.controls.testTypes.at(0).controls.testResult.setValue(TestResults.PASS);
-			Object.defineProperty(component.form, 'valid', { get: () => true });
+			testService.testType.testResult().value.set(TestResults.PASS);
+			vi.spyOn(TestBed.inject(GlobalErrorService), 'extractSignalFormErrors').mockReturnValue([]);
 
 			const setWarningsSpy = vi.spyOn(globalWarningService, 'setWarnings');
 			vi.spyOn(component as any, 'testTypeId').mockReturnValue('41');
@@ -193,8 +314,8 @@ describe('TestRecordV2Component', () => {
 			store.overrideSelector(techRecord, { techRecord_statusCode: StatusCodes.PROVISIONAL } as any);
 			store.refreshState();
 
-			component.form.controls.testTypes.at(0).controls.testResult.setValue(TestResults.PRS);
-			Object.defineProperty(component.form, 'valid', { get: () => true });
+			testService.testType.testResult().value.set(TestResults.PRS);
+			vi.spyOn(TestBed.inject(GlobalErrorService), 'extractSignalFormErrors').mockReturnValue([]);
 
 			const setWarningsSpy = vi.spyOn(globalWarningService, 'setWarnings');
 			vi.spyOn(component as any, 'testTypeId').mockReturnValue('95');
@@ -213,8 +334,8 @@ describe('TestRecordV2Component', () => {
 			store.overrideSelector(techRecord, { techRecord_statusCode: StatusCodes.PROVISIONAL } as any);
 			store.refreshState();
 
-			component.form.controls.testTypes.at(0).controls.testResult.setValue(TestResults.PASS);
-			Object.defineProperty(component.form, 'valid', { get: () => true });
+			testService.testType.testResult().value.set(TestResults.PASS);
+			vi.spyOn(TestBed.inject(GlobalErrorService), 'extractSignalFormErrors').mockReturnValue([]);
 
 			const setWarningsSpy = vi.spyOn(globalWarningService, 'setWarnings');
 			vi.spyOn(component as any, 'testTypeId').mockReturnValue('38');
@@ -228,8 +349,8 @@ describe('TestRecordV2Component', () => {
 			store.overrideSelector(techRecord, { techRecord_statusCode: StatusCodes.PROVISIONAL } as any);
 			store.refreshState();
 
-			component.form.controls.testTypes.at(0).controls.testResult.setValue(TestResults.PASS);
-			Object.defineProperty(component.form, 'valid', { get: () => true });
+			testService.testType.testResult().value.set(TestResults.PASS);
+			vi.spyOn(TestBed.inject(GlobalErrorService), 'extractSignalFormErrors').mockReturnValue([]);
 
 			const setWarningsSpy = vi.spyOn(globalWarningService, 'setWarnings');
 			vi.spyOn(component as any, 'testTypeId').mockReturnValue('142');
@@ -243,8 +364,8 @@ describe('TestRecordV2Component', () => {
 			store.overrideSelector(techRecord, { techRecord_statusCode: StatusCodes.PROVISIONAL } as any);
 			store.refreshState();
 
-			component.form.controls.testTypes.at(0).controls.testResult.setValue(TestResults.PASS);
-			Object.defineProperty(component.form, 'valid', { get: () => true });
+			testService.testType.testResult().value.set(TestResults.PASS);
+			vi.spyOn(TestBed.inject(GlobalErrorService), 'extractSignalFormErrors').mockReturnValue([]);
 
 			const setWarningsSpy = vi.spyOn(globalWarningService, 'setWarnings');
 			vi.spyOn(component as any, 'testTypeId').mockReturnValue('133');
@@ -258,8 +379,8 @@ describe('TestRecordV2Component', () => {
 			store.overrideSelector(techRecord, { techRecord_statusCode: StatusCodes.CURRENT } as any);
 			store.refreshState();
 
-			component.form.controls.testTypes.at(0).controls.testResult.setValue(TestResults.PASS);
-			Object.defineProperty(component.form, 'valid', { get: () => true });
+			testService.testType.testResult().value.set(TestResults.PASS);
+			vi.spyOn(TestBed.inject(GlobalErrorService), 'extractSignalFormErrors').mockReturnValue([]);
 
 			const setWarningsSpy = vi.spyOn(globalWarningService, 'setWarnings');
 			vi.spyOn(component as any, 'testTypeId').mockReturnValue('41');
@@ -273,8 +394,8 @@ describe('TestRecordV2Component', () => {
 			store.overrideSelector(techRecord, { techRecord_statusCode: StatusCodes.PROVISIONAL } as any);
 			store.refreshState();
 
-			component.form.controls.testTypes.at(0).controls.testResult.setValue(TestResults.FAIL);
-			Object.defineProperty(component.form, 'valid', { get: () => true });
+			testService.testType.testResult().value.set(TestResults.FAIL);
+			vi.spyOn(TestBed.inject(GlobalErrorService), 'extractSignalFormErrors').mockReturnValue([]);
 
 			const setWarningsSpy = vi.spyOn(globalWarningService, 'setWarnings');
 			vi.spyOn(component as any, 'testTypeId').mockReturnValue('41');
@@ -288,8 +409,8 @@ describe('TestRecordV2Component', () => {
 			store.overrideSelector(techRecord, { techRecord_statusCode: StatusCodes.PROVISIONAL } as any);
 			store.refreshState();
 
-			component.form.controls.testTypes.at(0).controls.testResult.setValue(TestResults.PASS);
-			Object.defineProperty(component.form, 'valid', { get: () => true });
+			testService.testType.testResult().value.set(TestResults.PASS);
+			vi.spyOn(TestBed.inject(GlobalErrorService), 'extractSignalFormErrors').mockReturnValue([]);
 
 			const setWarningsSpy = vi.spyOn(globalWarningService, 'setWarnings');
 			vi.spyOn(component as any, 'testTypeId').mockReturnValue('94');
@@ -312,7 +433,7 @@ describe('TestRecordV2Component', () => {
 			document.body.appendChild(container);
 
 			const globalErrorService = TestBed.inject(GlobalErrorService);
-			vi.spyOn(globalErrorService, 'extractGlobalErrors').mockReturnValue([
+			vi.spyOn(globalErrorService, 'extractSignalFormErrors').mockReturnValue([
 				{ error: 'Visit error', anchorLink: 'testStationPNumber' },
 				{ error: 'Test error', anchorLink: 'contingencyTestNumber' },
 			]);
@@ -336,7 +457,7 @@ describe('TestRecordV2Component', () => {
 			document.body.appendChild(container);
 
 			const globalErrorService = TestBed.inject(GlobalErrorService);
-			vi.spyOn(globalErrorService, 'extractGlobalErrors').mockReturnValue([
+			vi.spyOn(globalErrorService, 'extractSignalFormErrors').mockReturnValue([
 				{ error: 'Unknown field error', anchorLink: 'unknownField' },
 				{ error: 'Known field error', anchorLink: 'knownField' },
 			]);
@@ -355,37 +476,37 @@ describe('TestRecordV2Component', () => {
 
 	describe('onCancel', () => {
 		it('should set mode back to EDIT', () => {
-			fixture.componentRef.setInput('initialMode', Modes.EDIT);
-			component.mode.set(Modes.SUMMARY);
-			component.onCancel(component.initialMode());
+			testService.initialMode.set(Modes.EDIT);
+			testService.mode.set(Modes.SUMMARY);
+			component.onCancel(testService.initialMode());
 
-			expect(component.mode()).toBe(Modes.EDIT);
+			expect(testService.mode()).toBe(Modes.EDIT);
 		});
 
 		it('should clear warnings', () => {
 			const clearWarningsSpy = vi.spyOn(globalWarningService, 'clearWarnings');
-			fixture.componentRef.setInput('initialMode', Modes.EDIT);
-			component.onCancel(component.initialMode());
+			testService.initialMode.set(Modes.EDIT);
+			component.onCancel(testService.initialMode());
 
 			expect(clearWarningsSpy).toHaveBeenCalled();
 		});
 
 		it('should stop abandoning the test when backing out of the abandon flow', () => {
-			fixture.componentRef.setInput('initialMode', Modes.EDIT);
-			component.mode.set(Modes.ABANDON);
+			testService.initialMode.set(Modes.EDIT);
+			testService.mode.set(Modes.ABANDON);
 			testService.isAbandoning.set(true);
 
-			component.onCancel(component.initialMode());
+			component.onCancel(testService.initialMode());
 
 			expect(testService.isAbandoning()).toBe(false);
 		});
 
 		it('should clear errors', () => {
 			const clearErrorsSpy = vi.spyOn(TestBed.inject(GlobalErrorService), 'clearErrors');
-			fixture.componentRef.setInput('initialMode', Modes.EDIT);
-			component.mode.set(Modes.ABANDON);
+			testService.initialMode.set(Modes.EDIT);
+			testService.mode.set(Modes.ABANDON);
 
-			component.onCancel(component.initialMode());
+			component.onCancel(testService.initialMode());
 
 			expect(clearErrorsSpy).toHaveBeenCalled();
 		});
@@ -393,9 +514,9 @@ describe('TestRecordV2Component', () => {
 
 	describe('onMarkAsAbandoned', () => {
 		it('should flag the test as being abandoned before validating the form', () => {
-			fixture.componentRef.setInput('initialMode', Modes.EDIT);
+			testService.initialMode.set(Modes.EDIT);
 			const globalErrorService = TestBed.inject(GlobalErrorService);
-			vi.spyOn(globalErrorService, 'extractGlobalErrors').mockImplementation(() => {
+			vi.spyOn(globalErrorService, 'extractSignalFormErrors').mockImplementation(() => {
 				// the sections read this flag while their validators run
 				expect(testService.isAbandoning()).toBe(true);
 				return [];
@@ -404,27 +525,45 @@ describe('TestRecordV2Component', () => {
 			component.onMarkAsAbandoned();
 
 			expect(testService.isAbandoning()).toBe(true);
-			expect(component.mode()).toBe(Modes.ABANDON);
+			expect(testService.mode()).toBe(Modes.ABANDON);
 		});
 
 		it('should stop abandoning the test when the form is invalid', () => {
-			fixture.componentRef.setInput('initialMode', Modes.EDIT);
+			testService.initialMode.set(Modes.EDIT);
 			const globalErrorService = TestBed.inject(GlobalErrorService);
-			vi.spyOn(globalErrorService, 'extractGlobalErrors').mockReturnValue([
+			vi.spyOn(globalErrorService, 'extractSignalFormErrors').mockReturnValue([
 				{ error: 'Contingency Test Number is required', anchorLink: 'contingencyTestNumber' },
 			]);
 
 			component.onMarkAsAbandoned();
 
 			expect(testService.isAbandoning()).toBe(false);
-			expect(component.mode()).toBe(Modes.EDIT);
+			expect(testService.mode()).toBe(Modes.EDIT);
 		});
 	});
 
 	describe('onAbandon', () => {
+		it('marks abandonment fields touched and reports a missing reason', () => {
+			testService.mode.set(Modes.ABANDON);
+			const setErrors = vi.spyOn(TestBed.inject(GlobalErrorService), 'setErrors');
+
+			component.onAbandon();
+
+			expect(testService.testType.reasonForAbandoning().touched()).toBe(true);
+			expect(testService.testType.additionalCommentsForAbandon().touched()).toBe(true);
+			expect(setErrors).toHaveBeenCalledWith(
+				expect.arrayContaining([
+					expect.objectContaining({
+						error: 'Why was this test abandoned? is required',
+						anchorLink: 'reasonForAbandoning',
+					}),
+				])
+			);
+		});
+
 		it('includes the selected reason and additional comments in the submitted test result', () => {
-			fixture.componentRef.setInput('initialMode', Modes.EDIT);
-			let storedTestResult = component.form.getRawValue() as TestResultSchema;
+			testService.initialMode.set(Modes.EDIT);
+			let storedTestResult = testService.value() as TestResultSchema;
 			vi.spyOn(component as never, 'testResult').mockImplementation(() => storedTestResult);
 			vi.spyOn(testRecordsService, 'updateEditingTestResult').mockImplementation((testResult) => {
 				storedTestResult = testResult;
@@ -436,11 +575,15 @@ describe('TestRecordV2Component', () => {
 				};
 			});
 			const createSpy = vi.spyOn(testRecordsService, 'createTestResult').mockImplementation();
-			vi.spyOn(TestBed.inject(GlobalErrorService), 'extractGlobalErrors').mockReturnValue([]);
-			component.form.controls.testTypes.at(0).patchValue({
-				testTypeId: '95',
-				reasonForAbandoning: ['Abandoned at presenter request'] as never,
-				additionalCommentsForAbandon: 'Presenter could not continue the test',
+			vi.spyOn(TestBed.inject(GlobalErrorService), 'extractSignalFormErrors').mockReturnValue([]);
+			testService.patch({
+				testTypes: [
+					{
+						testTypeId: '95',
+						reasonForAbandoning: ['Abandoned at presenter request'] as never,
+						additionalCommentsForAbandon: 'Presenter could not continue the test',
+					},
+				],
 			});
 
 			component.onAbandon();
@@ -468,10 +611,10 @@ describe('TestRecordV2Component', () => {
 		it('should show seatbelts and defects for a PSV annual test', () => {
 			setTestResult('psv', '1');
 
-			expect(component.shouldShowSeatbeltSection()).toBe(true);
-			expect(component.shouldShowDefectSection()).toBe(true);
-			expect(component.shouldShowRequiredStandardsSection()).toBe(false);
-			expect(component.shouldShowAdditionalDefectsSection()).toBe(false);
+			expect(!testService.testType.seatbeltInstallationCheckDate().hidden()).toBe(true);
+			expect(!testService.testType.defects().hidden()).toBe(true);
+			expect(!testService.testType.requiredStandards().hidden()).toBe(false);
+			expect(!testService.testType.customDefects().hidden()).toBe(false);
 		});
 
 		it.each(['psv', 'hgv', 'trl', 'car', 'lgv', 'motorcycle'])(
@@ -479,10 +622,10 @@ describe('TestRecordV2Component', () => {
 			(vehicleType) => {
 				setTestResult(vehicleType, '130');
 
-				expect(component.shouldShowSeatbeltSection()).toBe(false);
-				expect(component.shouldShowDefectSection()).toBe(false);
-				expect(component.shouldShowRequiredStandardsSection()).toBe(true);
-				expect(component.shouldShowAdditionalDefectsSection()).toBe(true);
+				expect(!testService.testType.seatbeltInstallationCheckDate().hidden()).toBe(false);
+				expect(!testService.testType.defects().hidden()).toBe(false);
+				expect(!testService.testType.requiredStandards().hidden()).toBe(true);
+				expect(!testService.testType.customDefects().hidden()).toBe(true);
 			}
 		);
 	});

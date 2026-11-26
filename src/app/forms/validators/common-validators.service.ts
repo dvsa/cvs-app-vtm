@@ -6,6 +6,7 @@ import { selectAllReferenceDataByResourceType } from '@store/reference-data';
 import dayjs from 'dayjs';
 import validateDate from 'validate-govuk-date';
 import { GlobalError } from '../../core/components/global-error/global-error.interface';
+import { dateTimeError } from './date-time-error';
 
 @Injectable({ providedIn: 'root' })
 export class CommonValidatorsService {
@@ -557,39 +558,8 @@ export class CommonValidatorsService {
 		return (control) => {
 			if (!control.value) return null;
 
-			const [d, t] = control.value.split('T');
-			const [year, month, day] = d.split('-');
-			const { errors } = validateDate(day || '', month || '', year || '', label);
-
-			if (errors?.length) {
-				return { datetime: { error: errors[0].reason, anchorLink, accordion } };
-			}
-
-			if (year.length !== 4) {
-				return { datetime: { error: `'${label}' year must be four digits`, anchorLink, accordion } };
-			}
-
-			if (!t) {
-				return { datetime: { error: `'${label}' must include time`, anchorLink, accordion } };
-			}
-
-			const [hh, mm] = t.split(':');
-			const hours = Number.parseInt(hh, 10);
-			const minutes = Number.parseInt(mm, 10);
-
-			if (Number.isNaN(hours) || Number.isNaN(minutes)) {
-				return { datetime: { error: `'${label}' must include time`, anchorLink, accordion } };
-			}
-
-			if (hours > 23) {
-				return { datetime: { error: `'${label}' hours must be between 0 and 23`, anchorLink, accordion } };
-			}
-
-			if (minutes > 59) {
-				return { datetime: { error: `'${label}' minutes must be between 0 and 59`, anchorLink, accordion } };
-			}
-
-			return null;
+			const error = dateTimeError(control.value, label);
+			return error ? { datetime: { error, anchorLink, accordion } } : null;
 		};
 	}
 

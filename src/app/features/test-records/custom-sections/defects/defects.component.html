@@ -81,7 +81,7 @@
   </div>
 </div>
 
-@if (mode() === Modes.EDIT || mode() === Modes.AMEND) {
+@if (testService.isEditing()) {
   <app-button
     type="link"
     design="secondary"

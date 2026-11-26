@@ -28,7 +28,7 @@ import { selectTestType } from '@store/test-types/test-types.selectors';
 import { merge } from 'lodash-es';
 import { catchError, concatMap, filter, finalize, map, mergeMap, of, switchMap, take, tap, withLatestFrom } from 'rxjs';
 import { GlobalErrorService } from '../../core/components/global-error/global-error.service';
-import { INITIAL_TEST_RESULT_FORM_VALUE, TestService } from '../../services/test/test.service';
+import { TestService } from '../../services/test/test.service';
 import {
 	contingencyTestTypeSelected,
 	createTestResult,
@@ -348,10 +348,7 @@ export class TestResultsEffects {
 		() =>
 			this.actions$.pipe(
 				ofType(contingencyTestTypeSelected, editingTestResult, testTypeIdChanged),
-				tap(() => {
-					this.testService.form.reset(undefined, { emitEvent: false });
-					this.testService.form.patchValue(INITIAL_TEST_RESULT_FORM_VALUE, { emitEvent: false });
-				})
+				tap(() => this.testService.resetForm())
 			),
 		{ dispatch: false }
 	);
@@ -435,7 +432,7 @@ export class TestResultsEffects {
 	onGetRecallsSuccess$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(getRecallsSuccess),
-			tap(({ recalls }) => this.testService.form.controls.recalls.setValue(recalls, { emitEvent: false })),
+			tap(({ recalls }) => this.testService.patch({ recalls })),
 			concatLatestFrom(() => this.store.select(testResultInEdit)),
 			filter(([_, editingTestResult]) => Boolean(editingTestResult)),
 			map(([{ recalls }]) => patchEditingTestResult({ testResult: { recalls } }))

@@ -73,7 +73,7 @@ describe('DefectV2Component', () => {
 		fixture = TestBed.createComponent(DefectV2Component);
 		component = fixture.componentInstance;
 		testService = TestBed.inject(TestService);
-		testService.form.controls.vehicleType.setValue('hgv');
+		testService.form.vehicleType().value.set('hgv');
 		router = TestBed.inject(Router);
 		vi.spyOn(router, 'navigate').mockResolvedValue(true);
 	});
@@ -141,7 +141,7 @@ describe('DefectV2Component', () => {
 				additionalInformation: { notes: 'Existing notes', location: { axleNumber: 2 } },
 				media: [],
 			} as DefectDetailsSchema;
-			testService.form.controls.testTypes.at(0).controls.defects.setValue([defect]);
+			testService.testType.defects().value.set([defect]);
 			setRoute({ defectIndex: '0', ref: '1.2.advisory' });
 
 			await component.ngOnInit();
@@ -151,7 +151,7 @@ describe('DefectV2Component', () => {
 		});
 
 		it('revalidates notes after all sibling values have been patched', async () => {
-			testService.form.controls.testTypes.at(0).controls.defects.setValue([
+			testService.testType.defects().value.set([
 				{
 					deficiencyCategory: 'dangerous',
 					stdForProhibition: true,
@@ -193,13 +193,13 @@ describe('DefectV2Component', () => {
 		});
 
 		it.each(['car', 'lgv', 'motorcycle'] as const)('does not build location options for %s', (vehicleType) => {
-			testService.form.controls.vehicleType.setValue(vehicleType);
+			testService.form.vehicleType().value.set(vehicleType);
 			component.populateAdditionalInfoFromTaxonomy(taxonomy);
 			expect(component.additionalInfoMultiOptions).toEqual({});
 		});
 
 		it.each(['psv', 'trl'] as const)('handles missing %s location taxonomy', (vehicleType) => {
-			testService.form.controls.vehicleType.setValue(vehicleType);
+			testService.form.vehicleType().value.set(vehicleType);
 			component.populateAdditionalInfoFromTaxonomy(taxonomy);
 			expect(component.additionalInfoMultiOptions).toEqual({});
 		});

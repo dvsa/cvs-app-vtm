@@ -1,29 +1,26 @@
-<div [formGroup]="form">
-  @if (mode() === Modes.EDIT || mode() === Modes.AMEND) {
-    <ng-container formArrayName="testTypes">
-      <ng-container formGroupName="0">
-        <!-- Carried out during test -->
-        <govuk-form-group-radio
-          label="Carried out during test"
-          formControlName="seatbeltInstallationCheckDate"
-          [options]="YES_NO_OPTIONS"
-        ></govuk-form-group-radio>
+<div>
+  @if (testService.isEditing()) {
+    @let testType = form.testTypes[0];
+    <!-- Carried out during test -->
+    <govuk-form-group-radio
+      label="Carried out during test"
+      [formField]="testType.seatbeltInstallationCheckDate"
+      [options]="YES_NO_OPTIONS"
+    ></govuk-form-group-radio>
 
-        <!-- Number of seatbelts fitted -->
-        <govuk-form-group-input
-          label="Number of seatbelts fitted"
-          formControlName="numberOfSeatbeltsFitted"
-          type="number"
-          [width]="FormNodeWidth.M"
-        ></govuk-form-group-input>
+    <!-- Number of seatbelts fitted -->
+    <govuk-form-group-input
+      label="Number of seatbelts fitted"
+      [formField]="testType.numberOfSeatbeltsFitted"
+      type="number"
+      [width]="FormNodeWidth.M"
+    ></govuk-form-group-input>
 
-        <!-- Most recent installation check -->
-        <govuk-form-group-date
-          label="Most recent installation check"
-          formControlName="lastSeatbeltInstallationCheckDate"
-        ></govuk-form-group-date>
-      </ng-container>
-    </ng-container>
+    <!-- Most recent installation check -->
+    <govuk-form-group-date
+      label="Most recent installation check"
+      [formField]="testType.lastSeatbeltInstallationCheckDate"
+    ></govuk-form-group-date>
   } @else {
     @if (testResult(); as testResult) {
       <table class="govuk-table">

@@ -1011,7 +1011,6 @@ describe('TestResultsEffects', () => {
 
 		it('should keep the shared form in sync when recalls load in the background', () => {
 			const recalls: RecallsSchema = { hasRecall: true, manufacturer: 'Ford' };
-			const setValueSpy = vi.spyOn(effects['testService'].form.controls.recalls, 'setValue');
 
 			testScheduler.run(({ hot, flush }) => {
 				actions$ = hot('-a', { a: getRecallsSuccess({ vin: '12345678901234567', recalls }) });
@@ -1020,7 +1019,7 @@ describe('TestResultsEffects', () => {
 				flush();
 			});
 
-			expect(setValueSpy).toHaveBeenCalledWith(recalls, { emitEvent: false });
+			expect(effects['testService'].model().recalls).toEqual(recalls);
 		});
 
 		it('should patch recalls into a test result that is already being edited', () => {
@@ -1038,12 +1037,16 @@ describe('TestResultsEffects', () => {
 	});
 
 	describe('onEnterTestCreateOrAmend', () => {
-		it('should clear the shared test form without emitting, so the v2 form mirror cannot write blanks to the store', () => {
+		it('should clear the shared test form and its interaction state', () => {
 			const testService = TestBed.inject(TestService);
-			testService.form.controls.vin.setValue('VIN00000001');
-
-			const emissions: unknown[] = [];
-			const subscription = testService.form.valueChanges.subscribe((value) => emissions.push(value));
+			testService.patch({
+				vin: 'VIN00000001',
+				vrm: 'AB12CDE',
+				bodyType: { code: 'b', description: 'Box' },
+				vtg15: { vtg15Required: false, unNumber: '0123' },
+			});
+			testService.form.vin().markAsTouched();
+			testService.form.vin().markAsDirty();
 
 			testScheduler.run(({ hot, flush }) => {
 				actions$ = hot('-a', { a: testTypeIdChanged({ testTypeId: '65' }) });
@@ -1053,10 +1056,14 @@ describe('TestResultsEffects', () => {
 				flush();
 			});
 
-			subscription.unsubscribe();
-
-			expect(testService.form.controls.vin.value).toBe('');
-			expect(emissions).toEqual([]);
+			expect(testService.model()).toMatchObject({
+				vin: '',
+				vrm: null,
+				bodyType: { code: '', description: '' },
+				vtg15: { vtg15Required: null, unNumber: null },
+			});
+			expect(testService.form.vin().touched()).toBe(false);
+			expect(testService.form.vin().dirty()).toBe(false);
 		});
 	});
 

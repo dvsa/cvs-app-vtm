@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { CanDeactivate } from '@angular/router';
 import { TestRecordComponent } from '@features/test-records/amend/views/test-record-wrapper/test-record/test-record.component';
 import { Store } from '@ngrx/store';
-import { INITIAL_TEST_RESULT_FORM_VALUE, TestService } from '@services/test/test.service';
+import { TestService } from '@services/test/test.service';
 import { cancelEditingTestResult } from '@store/test-records';
 
 @Injectable({
@@ -14,8 +14,7 @@ export class CancelEditTestGuard implements CanDeactivate<TestRecordComponent> {
 
 	canDeactivate(): boolean {
 		this.store.dispatch(cancelEditingTestResult());
-		this.testService.form.reset(undefined, { emitEvent: false });
-		this.testService.form.patchValue(INITIAL_TEST_RESULT_FORM_VALUE, { emitEvent: false });
+		this.testService.resetForm();
 		return true;
 	}
 }

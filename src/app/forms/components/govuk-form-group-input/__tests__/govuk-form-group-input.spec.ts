@@ -1,7 +1,7 @@
 import { FormNodeWidth } from '@/src/app/services/dynamic-forms/dynamic-form.types';
 import { initialAppState } from '@/src/app/store';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ControlContainer, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ControlContainer, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { provideMockStore } from '@ngrx/store/testing';
 import { COMMON_LABEL_SUFFIXES, GovukFormGroupInputComponent } from '../govuk-form-group-input.component';
@@ -25,6 +25,20 @@ describe('GovukFormGroupInputComponent', () => {
 
 	it('should create', () => {
 		expect(component).toBeTruthy();
+	});
+
+	it.each([
+		'Enter a value',
+		{ error: 'Enter a value', anchorLink: 'test-input' },
+		{ kind: 'required', message: 'Enter a value' },
+	])('renders a validation message from %s', (error) => {
+		const control = new FormControl('');
+		control.setErrors({ required: error });
+		control.markAsTouched();
+		vi.spyOn(component, 'control', 'get').mockReturnValue(control);
+		fixture.detectChanges();
+
+		expect(fixture.nativeElement.querySelector('.govuk-error-message').textContent).toContain('Enter a value');
 	});
 
 	it('should write value and propagate via onChange', () => {
