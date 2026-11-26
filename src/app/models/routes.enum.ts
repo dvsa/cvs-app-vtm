@@ -6,10 +6,12 @@ export enum RootRoutes {
 	BATCH_CREATE_TECHNICAL_RECORD = 'create-batch',
 	CURRENT_TEST_RESULT = 'test-records/:systemNumber/test-result/:testResultId/:testNumber',
 	CURRENT_TECH_RECORD = 'tech-records/:systemNumber/:createdTimestamp',
+	TECH_RECORD_BY_SYSTEM_NUMBER = 'tech-records/:systemNumber',
 	REFERENCE_DATA = 'reference-data',
 	FEATURE_TOGGLE = 'feature-toggle',
 	BETAS = 'betas',
 	ERROR = 'error',
+	NOT_FOUND = 'not-found',
 	WILDCARD = '**',
 	ACCESSIBILITY_STATEMENT = 'accessibility',
 }

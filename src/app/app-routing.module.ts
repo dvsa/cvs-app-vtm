@@ -5,6 +5,7 @@ import { MsalGuard } from '@azure/msal-angular';
 import { CancelEditTechGuard } from '@guards/cancel-edit-tech/cancel-edit-tech.guard';
 import { FeatureToggleGuard } from '@guards/feature-toggle-guard/feature-toggle.guard';
 import { RoleGuard } from '@guards/role-guard/roles.guard';
+import { techRecordRedirectGuard } from '@guards/tech-record-redirect/tech-record-redirect.guard';
 import { Roles } from '@models/roles.enum';
 import { RootRoutes } from '@models/routes.enum';
 import { LoginComponent } from './features/login/login.component';
@@ -68,6 +69,13 @@ const routes: Routes = [
 				loadChildren: () => import('./features/test-records/amend/amend-test-records.routes').then((m) => m.routes),
 			},
 			{
+				path: RootRoutes.TECH_RECORD_BY_SYSTEM_NUMBER,
+				pathMatch: 'full',
+				data: { title: 'Tech Record', roles: Roles.TechRecordView },
+				canActivate: [MsalGuard, RoleGuard, techRecordRedirectGuard],
+				children: [],
+			},
+			{
 				path: RootRoutes.CURRENT_TECH_RECORD,
 				data: { title: 'Tech Record', roles: Roles.TechRecordView },
 				canActivate: [MsalGuard, RoleGuard],
@@ -96,6 +104,12 @@ const routes: Routes = [
 					import('./features/accessibility-statement/accessibility-statement.component').then(
 						(m) => m.AccessibilityStatementComponent
 					),
+			},
+			{
+				path: RootRoutes.NOT_FOUND,
+				pathMatch: 'full',
+				loadComponent: () =>
+					import('@core/components/page-not-found/page-not-found.component').then((m) => m.PageNotFoundComponent),
 			},
 			{
 				path: RootRoutes.ERROR,
