@@ -27,6 +27,25 @@ describe('Logs Reducer', () => {
 
 			expect(result).toEqual([log]);
 		});
+
+		it('should cap stored logs at 500 entries keeping the most recent', () => {
+			const existingLogs = Array.from({ length: 500 }, (_, i) => ({
+				type: LogType.INFO,
+				message: `Log ${i}`,
+				timestamp: i,
+			}));
+			const newLog = {
+				type: LogType.INFO,
+				message: 'Log 500',
+				timestamp: 500,
+			};
+
+			const result = logsReducer(existingLogs, logsActions.saveLog(newLog));
+
+			expect(result).toHaveLength(500);
+			expect(result[0].message).toBe('Log 1');
+			expect(result[499]).toEqual(newLog);
+		});
 	});
 
 	describe('[LogsEffects] Send Logs Success', () => {

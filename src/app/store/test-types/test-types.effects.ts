@@ -7,7 +7,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { HttpService } from '@services/http/http.service';
 import { UserService } from '@services/user-service/user-service';
-import { catchError, filter, map, of, switchMap, tap } from 'rxjs';
+import { catchError, exhaustMap, filter, map, of, switchMap, take, tap } from 'rxjs';
 import {
 	fetchTestTypes,
 	fetchTestTypesComplete,
@@ -32,17 +32,21 @@ export class TestTypeEffects {
 				}
 			}),
 			filter(() => !this.cacheManager.has(CacheKeys.TEST_TYPES)),
-			switchMap(() => this.userService.roles$),
-			switchMap((roles) => {
-				const typeOfTest = Roles.TestResultCreateDeskAssessment.split(',').some((role) => roles?.includes(role))
-					? TypeOfTest.DESK_BASED
-					: undefined;
+			exhaustMap(() =>
+				this.userService.roles$.pipe(
+					take(1),
+					switchMap((roles) => {
+						const typeOfTest = Roles.TestResultCreateDeskAssessment.split(',').some((role) => roles?.includes(role))
+							? TypeOfTest.DESK_BASED
+							: undefined;
 
-				return this.httpService.getTestTypes(typeOfTest).pipe(
-					map((testTypes) => fetchTestTypesSuccess({ payload: testTypes })),
-					catchError((e) => of(fetchTestTypesFailed({ error: e.message })))
-				);
-			})
+						return this.httpService.getTestTypes(typeOfTest).pipe(
+							map((testTypes) => fetchTestTypesSuccess({ payload: testTypes })),
+							catchError((e) => of(fetchTestTypesFailed({ error: e.message })))
+						);
+					})
+				)
+			)
 		)
 	);
 }

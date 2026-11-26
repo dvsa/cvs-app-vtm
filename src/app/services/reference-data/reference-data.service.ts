@@ -27,7 +27,7 @@ import {
 	selectSearchReturn,
 	selectTyreSearchCriteria,
 } from '@store/reference-data';
-import { Observable, of, switchMap, throwError, withLatestFrom } from 'rxjs';
+import { Observable, map, of, switchMap, throwError, withLatestFrom } from 'rxjs';
 
 @Injectable({
 	providedIn: 'root',
@@ -176,20 +176,14 @@ export class ReferenceDataService {
 	private mapReferenceDataOptions(
 		source: Observable<Array<ReferenceDataModelBase & Partial<User>> | undefined>
 	): Observable<MultiOptions | undefined> {
-		return new Observable((subscriber) => {
-			source.subscribe({
-				next: (val) => {
-					subscriber.next(
-						val?.map((option) => ({
-							value: option.resourceKey,
-							label: option.description ?? option.name ?? `${option.resourceKey}`,
-						}))
-					);
-				},
-				error: (e) => subscriber.error(e),
-				complete: () => subscriber.complete(),
-			});
-		});
+		return source.pipe(
+			map((val) =>
+				val?.map((option) => ({
+					value: option.resourceKey,
+					label: option.description ?? option.name ?? `${option.resourceKey}`,
+				}))
+			)
+		);
 	}
 
 	getReasonsForAbandoning(vehicleType: VehicleTypes | undefined): Observable<MultiOptions | undefined> {

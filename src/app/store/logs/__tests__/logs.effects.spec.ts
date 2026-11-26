@@ -114,5 +114,24 @@ describe('LogsEffects', () => {
 				},
 			});
 		});
+
+		it('should not send logs or emit when logs state is empty', () => {
+			store.overrideSelector(getLogsState, []);
+			const sendLogsSpy = vi.spyOn(logsProviderMock, 'sendLogs');
+			sendLogsSpy.mockClear();
+
+			actions$ = of(logsActions.sendLogs());
+			let emitted = false;
+
+			effects.sendLogsEffect$.subscribe({
+				next: () => {
+					emitted = true;
+				},
+				complete: () => {
+					expect(emitted).toBe(false);
+					expect(sendLogsSpy).not.toHaveBeenCalled();
+				},
+			});
+		});
 	});
 });

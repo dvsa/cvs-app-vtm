@@ -4,7 +4,7 @@ import { StatusCodes, VehicleTypes } from '@/src/app/models/vehicle-tech-record.
 import { DefaultNullOrEmpty } from '@/src/app/pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { FormatVehicleTypePipe } from '@/src/app/pipes/format-vehicle-type/format-vehicle-type.pipe';
 import { UpperCasePipe } from '@angular/common';
-import { Component, computed, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { Store } from '@ngrx/store';
@@ -14,6 +14,7 @@ import { getRecalls } from '@store/test-records';
 	selector: 'app-search-result',
 	templateUrl: './search-result.component.html',
 	styleUrls: ['./search-result.component.scss'],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 	imports: [DefaultNullOrEmpty, TagComponent, NumberPlateComponent, FormatVehicleTypePipe, UpperCasePipe, RouterLink],
 })
 export class SearchResultComponent {

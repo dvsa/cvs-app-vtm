@@ -83,7 +83,7 @@ if (environment.production) {
 
 bootstrapApplication(AppComponent, {
 	providers: [
-		provideZoneChangeDetection(),
+		provideZoneChangeDetection({ eventCoalescing: true }),
 		importProvidersFrom(
 			BrowserModule,
 			AppRoutingModule,
@@ -125,12 +125,6 @@ bootstrapApplication(AppComponent, {
 			useFactory: featureFactory,
 			deps: [Store],
 			multi: true,
-		},
-		{
-			provide: ErrorHandler,
-			useValue: Sentry.createErrorHandler({
-				showDialog: true,
-			}),
 		},
 		{
 			provide: Sentry.TraceService,

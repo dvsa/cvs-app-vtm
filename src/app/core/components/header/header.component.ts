@@ -1,5 +1,5 @@
 import { FeatureFlags, FeatureToggleService } from '@/src/app/services/feature-toggle-service/feature-toggle-service';
-import { Component, OnDestroy, OnInit, inject, input, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject, input, output, signal } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { ReplaySubject, takeUntil } from 'rxjs';
 import packageInfo from '../../../../../package.json';
@@ -8,6 +8,7 @@ import packageInfo from '../../../../../package.json';
 	selector: 'app-header',
 	templateUrl: './header.component.html',
 	styleUrls: ['./header.component.scss'],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent implements OnInit, OnDestroy {
 	readonly logOutEvent = output<void>();
