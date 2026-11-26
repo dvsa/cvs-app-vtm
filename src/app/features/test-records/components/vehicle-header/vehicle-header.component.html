@@ -105,13 +105,13 @@
         <div class="tester_and_location">
           <dl class="govuk-summary-list govuk-summary-list--no-border">
             <div class="govuk-summary-list__row">
-              <dt class="govuk-summary-list__key">Assessor</dt>
+              <dt class="govuk-summary-list__key">Assessor:</dt>
               <dd class="govuk-summary-list__value">
                 {{ testResult.testerName | defaultNullOrEmpty }}
               </dd>
             </div>
             <div class="govuk-summary-list__row">
-              <dt class="govuk-summary-list__key">Test location</dt>
+              <dt class="govuk-summary-list__key">Test location:</dt>
               <dd class="govuk-summary-list__value">
                 {{ testResult.testStationName | defaultNullOrEmpty }}
               </dd>
@@ -135,7 +135,7 @@
         @switch (testResult.vehicleType) {
           @case (vehicleTypes.TRL) {
             <div class="govuk-summary-list__row">
-              <dt class="govuk-summary-list__key">Trailer ID</dt>
+              <dt class="govuk-summary-list__key">Trailer ID:</dt>
               <dd id="test-testTypeId" class="govuk-summary-list__value">
                 <app-number-plate
                   [vrm]="testResult.trailerId | defaultNullOrEmpty"
@@ -145,7 +145,7 @@
           }
           @default {
             <div class="govuk-summary-list__row">
-              <dt class="govuk-summary-list__key">VRM</dt>
+              <dt class="govuk-summary-list__key">VRM:</dt>
               <dd id="test-testTypeId" class="govuk-summary-list__value">
                 <app-number-plate [vrm]="testResult.vrm"></app-number-plate>
               </dd>
@@ -153,13 +153,13 @@
           }
         }
         <div class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key">VIN</dt>
+          <dt class="govuk-summary-list__key">VIN:</dt>
           <dd id="test-vin" class="govuk-summary-list__value">
             {{ testResult.vin | defaultNullOrEmpty }}
           </dd>
         </div>
         <div class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key">Vehicle type</dt>
+          <dt class="govuk-summary-list__key">Vehicle type:</dt>
           <dd id="test-vehicleType" class="govuk-summary-list__value">
             {{
               (techRecord$ | async)?.techRecord_vehicleType
@@ -172,7 +172,7 @@
         @if (techRecord$ | async; as techRecord) {
           @if (technicalRecordService.isAdrVehicle(techRecord)) {
             <div class="govuk-summary-list__row">
-              <dt class="govuk-summary-list__key">VTG15 required?</dt>
+              <dt class="govuk-summary-list__key">VTG15 required?:</dt>
               <dd class="govuk-summary-list__value">
                 {{ getVTG15RequiredText() }}
               </dd>
@@ -181,7 +181,7 @@
             @if (testResult.vtg15?.vtg15Required) {
               @if (!isReview() && (testResult.vtg15?.media?.length ?? 0) > 0) {
                 <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key">Photo of VTG15</dt>
+                  <dt class="govuk-summary-list__key">Photo of VTG15:</dt>
                   @if (hasVTG15Media()) {
                     @if (!hasVTG15RetentionPeriodPassed()) {
                       <dd
@@ -218,14 +218,14 @@
                 </div>
               }
               <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">UN number</dt>
+                <dt class="govuk-summary-list__key">UN number:</dt>
                 <dd class="govuk-summary-list__value">
                   UN{{ testResult.vtg15?.unNumber }}
                 </dd>
               </div>
               <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">
-                  Hazard classification numbers
+                  Hazard classification numbers:
                 </dt>
                 <dd class="govuk-summary-list__value">
                   Primary - Class
@@ -249,7 +249,7 @@
         }
 
         <div class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key">Country of registration</dt>
+          <dt class="govuk-summary-list__key">Country of registration:</dt>
           <dd id="test-cor" class="govuk-summary-list__value">
             {{
               testResult.countryOfRegistration ?? undefined
@@ -261,14 +261,14 @@
           </dd>
         </div>
         <div class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key">EU vehicle category</dt>
+          <dt class="govuk-summary-list__key">EU vehicle category:</dt>
           <dd id="test-euCategory" class="govuk-summary-list__value">
             {{ testResult.euVehicleCategory | defaultNullOrEmpty }}
           </dd>
         </div>
         @if (testResult.vehicleType !== vehicleTypes.TRL) {
           <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">Odometer reading</dt>
+            <dt class="govuk-summary-list__key">Odometer reading:</dt>
             <dd id="test-odomReading" class="govuk-summary-list__value">
               {{
                 combinedOdometerReading(
@@ -306,7 +306,7 @@
               <dt class="govuk-summary-list__key">Photo of certificate:</dt>
               <dd
                 id="test-certificate-photo"
-                class="govuk-summary-list__value whitespace-pre-wrap"
+                class="govuk-summary-list__value whitespace-pre-line"
               >
                 @if (hasCertificatePhoto(testResult)) {
                   @if (hasCertificatePhotoRetentionExpired(testResult)) {
@@ -332,7 +332,7 @@
         @if (shouldShowAbandonCert) {
           <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">
-              {{ abandonCertDocName }} document
+              {{ abandonCertDocName }} document:
             </dt>
             <dd id="test-vtg-vtp-document" class="govuk-summary-list__value">
               <a
