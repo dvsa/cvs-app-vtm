@@ -9,7 +9,7 @@ import { ErrorInterceptorModule } from './error-handling/error-handling.module';
 		DelayedRetryModule.forRoot({
 			count: 3,
 			delay: 2000,
-			httpStatusRetry: [0, 504],
+			httpStatusRetry: [0, 408, 502, 503, 504],
 			backoff: true,
 			whiteList: ['document-retrieval'],
 		}),

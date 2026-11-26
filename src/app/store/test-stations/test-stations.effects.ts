@@ -4,7 +4,7 @@ import { HttpCacheManager } from '@ngneat/cashew';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { HttpService } from '@services/http/http.service';
-import { catchError, filter, map, mergeMap, of, tap } from 'rxjs';
+import { catchError, exhaustMap, filter, map, mergeMap, of, tap } from 'rxjs';
 import {
 	fetchTestStation,
 	fetchTestStationFailed,
@@ -31,7 +31,7 @@ export class TestStationsEffects {
 				}
 			}),
 			filter(() => !this.cacheManager.has(CacheKeys.TEST_STATIONS)),
-			mergeMap(() =>
+			exhaustMap(() =>
 				this.httpService.fetchTestStations().pipe(
 					map((testStations) => fetchTestStationsSuccess({ payload: testStations })),
 					catchError((e) => of(fetchTestStationsFailed({ error: e.message })))

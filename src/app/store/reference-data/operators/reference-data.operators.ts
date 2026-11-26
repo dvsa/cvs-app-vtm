@@ -14,11 +14,12 @@ export function handleNotFound(...args: unknown[]) {
 		const isEmpty = (val: any) =>
 			!Object.keys(val).length || (Object.prototype.hasOwnProperty.call(val, 'data') && !val.data.length);
 		return new Observable((subscriber) => {
-			source.subscribe({
+			return source.subscribe({
 				next: (val) => {
 					if (val && isEmpty(val)) {
 						// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
 						subscriber.error(new Error(`Reference data not found for resource type ${args}`));
+						return;
 					}
 
 					subscriber.next(val);
@@ -34,7 +35,7 @@ export function sortReferenceData(resourceType: ReferenceDataResourceType) {
 	// eslint-disable-next-line func-names
 	return (source: Observable<ReferenceDataApiResponse>): Observable<ReferenceDataApiResponse> =>
 		new Observable((subscriber) => {
-			source.subscribe({
+			return source.subscribe({
 				next: (val) => {
 					const { data } = val;
 					subscriber.next({ ...val, data: _sort(resourceType, data) });

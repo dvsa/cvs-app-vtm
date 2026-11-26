@@ -1,7 +1,6 @@
 import { AsyncPipe, NgClass } from '@angular/common';
-// eslint-disable-next-line @typescript-eslint/triple-slash-reference
 /// <reference path="govuk.d.ts">
-import { Component, OnDestroy, OnInit, afterNextRender, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, afterNextRender, inject } from '@angular/core';
 import { Event, NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { prefetchAccessibleAutocomplete } from '@forms/components/autocomplete/load-accessible-autocomplete';
 import { Store } from '@ngrx/store';
@@ -14,7 +13,7 @@ import { startSendingLogs } from '@store/logs/logs.actions';
 import { selectRouteData } from '@store/router/router.selectors';
 import { GoogleTagManagerService } from 'angular-google-tag-manager';
 import { initAll } from 'govuk-frontend/govuk/all';
-import { Subject, combineLatest, map, takeUntil } from 'rxjs';
+import { Subject, combineLatest, distinctUntilChanged, map, shareReplay, takeUntil } from 'rxjs';
 import packageInfo from '../../package.json';
 import { environment } from '../environments/environment';
 import { BreadcrumbsComponent } from './core/components/breadcrumbs/breadcrumbs.component';
@@ -31,6 +30,7 @@ import { selectFeatureFlags } from './store/feature-flags/feature-flags.selector
 	selector: 'app-root',
 	templateUrl: './app.component.html',
 	styleUrls: ['app.component.scss'],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 	imports: [
 		HeaderComponent,
 		PhaseBannerComponent,
@@ -80,10 +80,15 @@ export class AppComponent implements OnInit, OnDestroy {
 			}
 
 			return false;
-		})
+		}),
+		distinctUntilChanged(),
+		shareReplay({ bufferSize: 1, refCount: true })
 	);
 
-	isStandardLayout$ = this.isCustomLayout$.pipe(map((isCustomLayout) => !isCustomLayout));
+	isStandardLayout$ = this.isCustomLayout$.pipe(
+		map((isCustomLayout) => !isCustomLayout),
+		distinctUntilChanged()
+	);
 
 	async ngOnInit() {
 		if (!this.sentryInitialized) {

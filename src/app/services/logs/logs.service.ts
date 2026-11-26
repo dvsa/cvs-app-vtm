@@ -15,6 +15,7 @@ export class LogsProvider {
 	private store$ = inject(Store<LogsModel>);
 	private oid = this.store$.selectSignal(id);
 	private employeeId = this.store$.selectSignal(employeeId);
+	private url = this.store$.selectSignal(selectMergedRouteUrl);
 
 	public sendLogs = (logs: Log[]) => {
 		if (!logs || logs?.length === 0) {
@@ -39,7 +40,7 @@ export class LogsProvider {
 	};
 
 	public dispatchLog(log: Log): void {
-		const url = this.store$.selectSignal(selectMergedRouteUrl)();
+		const url = this.url();
 
 		const pageName = document.title.replace(/Vehicle Testing Management - /, '');
 

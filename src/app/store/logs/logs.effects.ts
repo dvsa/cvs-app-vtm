@@ -30,7 +30,8 @@ export class LogsEffects {
 			ofType(logsActions.sendLogs),
 			filter(() => !LogsEffects.isAutomation),
 			concatLatestFrom(() => this.store$.pipe(select(getLogsState))),
-			switchMap(([_, logs]) =>
+			filter(([, logs]) => logs.length > 0),
+			switchMap(([, logs]) =>
 				forkJoin([this.logsProvider.sendLogs(logs)]).pipe(
 					map(() => logsActions.sendLogsSuccess()),
 					catchError((err) => of(logsActions.sendLogsFailure(err)))

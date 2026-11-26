@@ -36,7 +36,7 @@ import {
 	updateTestResultFailed,
 } from '@store/test-records';
 import { cloneDeep } from 'lodash-es';
-import { Observable, take, throwError } from 'rxjs';
+import { Observable, map, take, throwError } from 'rxjs';
 
 @Injectable({
 	providedIn: 'root',
@@ -195,15 +195,7 @@ export class TestRecordsService {
 				return !!testTypeGroup && !!vehicleTpl && Object.prototype.hasOwnProperty.call(vehicleTpl, testTypeGroup);
 			};
 
-			return new Observable((subscriber) => {
-				source.subscribe({
-					next: (val) => {
-						subscriber.next(handle(val as unknown as TestResultSchema));
-					},
-					error: (e) => subscriber.error(e),
-					complete: () => subscriber.complete(),
-				});
-			});
+			return source.pipe(map((val) => handle(val as unknown as TestResultSchema)));
 		};
 	}
 

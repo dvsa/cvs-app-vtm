@@ -61,5 +61,8 @@ export class LoadingService {
 		this.referenceDataLoadingState$,
 		this.techRecordSearchLoadingState$,
 		this.requiredStandardsLoadingState$,
-	]).pipe(map((states) => states.some((b) => b)));
+	]).pipe(
+		map((states) => states.some((b) => b)),
+		distinctUntilChanged()
+	);
 }
