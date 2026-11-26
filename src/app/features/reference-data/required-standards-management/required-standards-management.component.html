@@ -1,0 +1,196 @@
+<div class="govuk-grid-row" *appRoleRequired="roles.ReferenceDataView">
+  <div class="govuk-grid-column-full">
+    @if (mode === 'sections') {
+      <h1 class="govuk-heading-xl">Search for required standard sections</h1>
+      <p class="govuk-hint">The available taxonomy contains sections with standards for the selected vehicle category.</p>
+      <div class="govuk-form-group">
+        <label class="govuk-label" for="category">EU vehicle category</label>
+        <select id="category" class="govuk-select" [formControl]="selectedCategory">
+          <option [ngValue]="null">Select a category</option>
+          @for (option of categories; track option.value) {
+            <option [value]="option.value">{{ option.label }}</option>
+          }
+        </select>
+      </div>
+      <app-button id="show-sections" [disabled]="!selectedCategory.value" (clicked)="showCategory()">Show sections</app-button>
+      @if (!selectedCategory.value) {
+        <div class="govuk-warning-text">
+          <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+          <strong class="govuk-warning-text__text"><span class="govuk-warning-text__assistive">Warning</span> You must select an EU vehicle category first.</strong>
+        </div>
+      } @else if (selectedCategory.value !== category) {
+        <p class="govuk-hint">Select Show sections to load the selected EU vehicle category.</p>
+      }
+    }
+
+    @if (mode === 'sections-deleted' || mode === 'standards-deleted') {
+      <h1 class="govuk-heading-xl">{{ mode === 'sections-deleted' ? 'Deleted required standard sections' : 'Deleted required standards' }}</h1>
+      <p class="govuk-body">Deleted records are not available from the current required-standards API.</p>
+      <a class="govuk-button govuk-button--secondary" [routerLink]="mode === 'sections-deleted' ? [base] : sectionLink()" [queryParams]="mode === 'sections-deleted' ? { category: category || null } : {}">Back</a>
+    }
+
+    @if (loading()) {
+      <p class="govuk-body" role="status">Loading required standards...</p>
+    }
+    @if (error()) {
+      <div class="govuk-error-summary" role="alert">
+        <h2 class="govuk-error-summary__title">There is a problem</h2>
+        <p class="govuk-body">{{ error() }}</p>
+        @if (retryable()) {
+          <button type="button" class="govuk-button govuk-button--secondary" (click)="load()">Try again</button>
+        }
+      </div>
+    }
+
+    @if (mode === 'standards' && !loading() && !error() && section(); as currentSection) {
+      <h1 class="govuk-heading-xl">{{ currentSection.sectionNumber }}. {{ currentSection.sectionDescription }}</h1>
+    }
+
+    @if (!loading() && !error() && ((mode === 'sections' && category && selectedCategory.value === category) || (mode === 'standards' && section()))) {
+      <div class="buttons-and-search govuk-!-margin-bottom-7">
+          <div class="search-controls">
+            <div class="search-field">
+              <label class="govuk-label" [for]="mode === 'sections' ? 'section-search' : 'standard-search'">{{ mode === 'sections' ? 'Search sections' : 'Search required standards' }}</label>
+              <div class="search-input">
+                <input [id]="mode === 'sections' ? 'section-search' : 'standard-search'" class="govuk-input" [formControl]="search" (keyup.enter)="activeSearch.set(search.value)">
+                <button [id]="mode === 'sections' ? 'search-sections' : 'search-standards'" type="button" class="govuk-button search-btn" [attr.aria-label]="mode === 'sections' ? 'Search sections' : 'Search required standards'" (click)="activeSearch.set(search.value)">
+                  <svg width="20" height="20" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                    <circle cx="12.0161" cy="11.0161" r="8.51613" stroke="currentColor" stroke-width="3"></circle>
+                    <line x1="17.8668" y1="17.3587" x2="26.4475" y2="25.9393" stroke="currentColor" stroke-width="3"></line>
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <button [id]="mode === 'sections' ? 'clear-sections' : 'clear-standards'" type="button" class="govuk-button govuk-button--secondary" (click)="search.setValue(''); activeSearch.set('')">Clear filters</button>
+          </div>
+        <div class="add-delete-buttons">
+          <a class="govuk-button" [routerLink]="mode === 'sections' ? [base, 'create'] : [...sectionLink(), 'create']" [queryParams]="mode === 'sections' ? { category: category } : {}" *appRoleRequired="roles.ReferenceDataAmend">Add new</a>
+          <a class="govuk-button govuk-button--secondary" [routerLink]="mode === 'sections' ? [base, 'deleted-items'] : [...sectionLink(), 'deleted-items']" [queryParams]="mode === 'sections' ? { category: category } : {}">Deleted items</a>
+        </div>
+      </div>
+    }
+
+    @if (!loading() && !error()) {
+      @if (mode === 'sections' && category && selectedCategory.value === category) {
+        <table class="govuk-table">
+          <thead class="govuk-table__head"><tr class="govuk-table__row"><th scope="col" class="govuk-table__header">No.</th><th scope="col" class="govuk-table__header">Description</th><th scope="col" class="govuk-table__header">EU cat.</th><th scope="col" class="govuk-table__header">Actions</th></tr></thead>
+          <tbody class="govuk-table__body">
+            @for (item of filterSections(); track $index) {
+              <tr class="govuk-table__row">
+                <th scope="row" class="govuk-table__header">{{ item.sectionNumber }}</th>
+                <td class="govuk-table__cell">
+                  @if (sectionUnique(item.sectionNumber)) {
+                    <a class="govuk-link" [routerLink]="sectionLink(item.sectionNumber)">{{ item.sectionDescription }}</a>
+                  } @else { {{ item.sectionDescription }} <span class="govuk-hint">Ambiguous section number</span> }
+                </td>
+                <td class="govuk-table__cell">{{ category.toUpperCase() }}</td>
+                <td class="govuk-table__cell">
+                  @if (sectionUnique(item.sectionNumber)) {
+                    <span *appRoleRequired="roles.ReferenceDataAmend">
+                      <a class="govuk-link govuk-!-margin-right-3" [routerLink]="[...sectionLink(item.sectionNumber), 'amend']">Amend</a>
+                      <a class="govuk-link" [routerLink]="[...sectionLink(item.sectionNumber), 'delete']">Delete</a>
+                    </span>
+                  }
+                </td>
+              </tr>
+            } @empty {
+              <tr class="govuk-table__row"><td colspan="4" class="govuk-table__cell">No sections found.</td></tr>
+            }
+          </tbody>
+        </table>
+      }
+
+      @if (mode === 'standards' && section()) {
+        <table class="govuk-table">
+          <thead class="govuk-table__head"><tr class="govuk-table__row"><th scope="col" class="govuk-table__header">No.</th><th scope="col" class="govuk-table__header">Required standard</th><th scope="col" class="govuk-table__header">Ref</th><th scope="col" class="govuk-table__header">Actions</th></tr></thead>
+          <tbody class="govuk-table__body">
+            @for (item of filterStandards(); track $index) {
+              <tr class="govuk-table__row">
+                <th scope="row" class="govuk-table__header">{{ item.rsNumber }}</th>
+                <td class="govuk-table__cell">{{ item.requiredStandard }}</td>
+                <td class="govuk-table__cell">{{ item.refCalculation }}</td>
+                <td class="govuk-table__cell">
+                  @if (standardUnique(item.refCalculation) && item.refCalculation) {
+                    <span *appRoleRequired="roles.ReferenceDataAmend">
+                      <a class="govuk-link govuk-!-margin-right-3" [routerLink]="[...sectionLink(), item.refCalculation, 'amend']">Amend</a>
+                      <a class="govuk-link" [routerLink]="[...sectionLink(), item.refCalculation, 'delete']">Delete</a>
+                    </span>
+                  } @else { <span class="govuk-hint">Reference unavailable or ambiguous</span> }
+                </td>
+              </tr>
+            } @empty {
+              <tr class="govuk-table__row"><td colspan="4" class="govuk-table__cell">No required standards found.</td></tr>
+            }
+          </tbody>
+        </table>
+        <a class="govuk-button govuk-button--secondary" [routerLink]="[base]" [queryParams]="{ category: category }">Back</a>
+      }
+
+      @if ((mode === 'section-create' || mode === 'section-amend') && (mode === 'section-create' || section())) {
+        <div *appRoleRequired="roles.ReferenceDataAmend">
+          <h1 class="govuk-heading-xl">{{ mode === 'section-create' ? 'Create a required standard section' : 'Amend required standard section' }}</h1>
+          <p class="govuk-hint">This proof of concept does not yet save changes.</p>
+          @if (saveUnavailable()) {
+            <p class="govuk-error-message" role="alert">Changes cannot be saved because amendment is not yet available.</p>
+          }
+          <form [formGroup]="sectionForm">
+            <govuk-form-group-select formControlName="euVehicleCategory" label="EU vehicle category" [options]="categories" [allowNull]="true"></govuk-form-group-select>
+            <govuk-form-group-input formControlName="sectionNumber" label="Section number"></govuk-form-group-input>
+            <govuk-form-group-textarea formControlName="sectionDescription" label="Section description"></govuk-form-group-textarea>
+            <div class="govuk-button-group">
+              <button id="submit-section" type="button" class="govuk-button" [disabled]="mode === 'section-create'" (click)="saveUnavailable.set(true)">{{ mode === 'section-create' ? 'Create' : 'Amend' }}</button>
+              <a class="govuk-button govuk-button--secondary" [routerLink]="[base]" [queryParams]="{ category: category || null }">Cancel</a>
+            </div>
+          </form>
+        </div>
+      }
+
+      @if ((mode === 'standard-create' && section()) || (mode === 'standard-amend' && standard())) {
+        <div *appRoleRequired="roles.ReferenceDataAmend">
+          <h1 class="govuk-heading-xl">{{ mode === 'standard-create' ? 'Create a required standard' : 'Amend required standard' }}</h1>
+          <p class="govuk-hint">This proof of concept does not yet save changes. The API returns required-standard numbers as numbers.</p>
+          @if (saveUnavailable()) {
+            <p class="govuk-error-message" role="alert">Changes cannot be saved because amendment is not yet available.</p>
+          }
+          <form [formGroup]="standardForm">
+            <govuk-form-group-input formControlName="rsNumber" label="Required standard number"></govuk-form-group-input>
+            <govuk-form-group-textarea formControlName="requiredStandard" label="Required standard"></govuk-form-group-textarea>
+            <govuk-form-group-input formControlName="refCalculation" label="Ref"></govuk-form-group-input>
+            <govuk-form-group-checkbox formControlName="additionalInfo" label="Additional information"></govuk-form-group-checkbox>
+            <govuk-form-group-checkbox formControlName="basicInspection" label="Basic inspection"></govuk-form-group-checkbox>
+            <govuk-form-group-checkbox formControlName="normalInspection" label="Normal inspection"></govuk-form-group-checkbox>
+            <div class="govuk-button-group">
+              <button id="submit-standard" type="button" class="govuk-button" [disabled]="mode === 'standard-create'" (click)="saveUnavailable.set(true)">{{ mode === 'standard-create' ? 'Create' : 'Amend' }}</button>
+              <a class="govuk-button govuk-button--secondary" [routerLink]="sectionLink()">Cancel</a>
+            </div>
+          </form>
+        </div>
+      }
+
+      @if (mode === 'section-delete' && section(); as currentSection) {
+        <div *appRoleRequired="roles.ReferenceDataAmend">
+          <h1 class="govuk-heading-xl">Confirm delete of required standard section: {{ currentSection.sectionDescription }}</h1>
+          <p class="govuk-hint">Confirming deletion would also delete associated required standards. Deletion is not yet available.</p>
+          <table class="govuk-table">
+            <caption class="govuk-table__caption govuk-table__caption--m">Required standards</caption>
+            <thead class="govuk-table__head"><tr class="govuk-table__row"><th scope="col" class="govuk-table__header">No.</th><th scope="col" class="govuk-table__header">Required standard</th></tr></thead>
+            <tbody class="govuk-table__body">
+              @for (item of currentSection.requiredStandards; track $index) {
+                <tr class="govuk-table__row"><th scope="row" class="govuk-table__header">{{ item.rsNumber }}</th><td class="govuk-table__cell">{{ item.requiredStandard }}</td></tr>
+              } @empty { <tr><td colspan="2" class="govuk-table__cell">No required standards.</td></tr> }
+            </tbody>
+          </table>
+          <app-button-group><app-button id="confirm-delete" design="warning" [disabled]="true">Confirm delete</app-button><a class="govuk-button govuk-button--secondary" [routerLink]="[base]" [queryParams]="{ category: category }">Cancel</a></app-button-group>
+        </div>
+      }
+      @if (mode === 'standard-delete' && standard(); as currentStandard) {
+        <div *appRoleRequired="roles.ReferenceDataAmend">
+          <h1 class="govuk-heading-xl">Confirm delete of required standard: {{ currentStandard.rsNumber }}</h1>
+          <p class="govuk-hint">Deletion is not yet available.</p>
+          <p class="govuk-body">{{ currentStandard.requiredStandard }}</p>
+          <app-button-group><app-button id="confirm-delete" design="warning" [disabled]="true">Confirm delete</app-button><a class="govuk-button govuk-button--secondary" [routerLink]="sectionLink()">Cancel</a></app-button-group>
+        </div>
+      }
+    }
+  </div>
+</div>

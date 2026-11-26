@@ -73,6 +73,7 @@ export enum ReferenceDataRoutes {
 	KEY = ':key',
 	DELETE = ':key/delete',
 	DEFECTS = 'defects',
+	REQUIRED_STANDARDS = 'required-standards',
 }
 
 export enum TestRecordAmendRoutes {

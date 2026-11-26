@@ -207,6 +207,105 @@ export const routes: Routes = [
 				],
 			},
 			{
+				path: ReferenceDataRoutes.REQUIRED_STANDARDS,
+				data: {
+					title: 'Required standard sections',
+					roles: Roles.ReferenceDataView,
+					breadcrumbPreserveQueryParams: true,
+				},
+				canActivate: [MsalGuard, RoleGuard],
+				children: [
+					{
+						path: '',
+						pathMatch: 'full',
+						data: { title: 'Required standard sections', mode: 'sections', roles: Roles.ReferenceDataView },
+						loadComponent: () =>
+							import('./required-standards-management/required-standards-management.component').then(
+								(m) => m.RequiredStandardsManagementComponent
+							),
+					},
+					{
+						path: 'create',
+						data: { title: 'Create section', mode: 'section-create', roles: Roles.ReferenceDataAmend },
+						canActivate: [MsalGuard, RoleGuard],
+						loadComponent: () =>
+							import('./required-standards-management/required-standards-management.component').then(
+								(m) => m.RequiredStandardsManagementComponent
+							),
+					},
+					{
+						path: 'deleted-items',
+						data: { title: 'Deleted sections', mode: 'sections-deleted', roles: Roles.ReferenceDataView },
+						loadComponent: () =>
+							import('./required-standards-management/required-standards-management.component').then(
+								(m) => m.RequiredStandardsManagementComponent
+							),
+					},
+					{
+						path: ':category/:sectionNumber/amend',
+						data: { title: 'Amend section', mode: 'section-amend', roles: Roles.ReferenceDataAmend },
+						canActivate: [MsalGuard, RoleGuard],
+						loadComponent: () =>
+							import('./required-standards-management/required-standards-management.component').then(
+								(m) => m.RequiredStandardsManagementComponent
+							),
+					},
+					{
+						path: ':category/:sectionNumber/delete',
+						data: { title: 'Delete section', mode: 'section-delete', roles: Roles.ReferenceDataAmend },
+						canActivate: [MsalGuard, RoleGuard],
+						loadComponent: () =>
+							import('./required-standards-management/required-standards-management.component').then(
+								(m) => m.RequiredStandardsManagementComponent
+							),
+					},
+					{
+						path: ':category/:sectionNumber',
+						pathMatch: 'full',
+						data: { title: 'Required standards', mode: 'standards', roles: Roles.ReferenceDataView },
+						loadComponent: () =>
+							import('./required-standards-management/required-standards-management.component').then(
+								(m) => m.RequiredStandardsManagementComponent
+							),
+					},
+					{
+						path: ':category/:sectionNumber/create',
+						data: { title: 'Create required standard', mode: 'standard-create', roles: Roles.ReferenceDataAmend },
+						canActivate: [MsalGuard, RoleGuard],
+						loadComponent: () =>
+							import('./required-standards-management/required-standards-management.component').then(
+								(m) => m.RequiredStandardsManagementComponent
+							),
+					},
+					{
+						path: ':category/:sectionNumber/deleted-items',
+						data: { title: 'Deleted required standards', mode: 'standards-deleted', roles: Roles.ReferenceDataView },
+						loadComponent: () =>
+							import('./required-standards-management/required-standards-management.component').then(
+								(m) => m.RequiredStandardsManagementComponent
+							),
+					},
+					{
+						path: ':category/:sectionNumber/:ref/amend',
+						data: { title: 'Amend required standard', mode: 'standard-amend', roles: Roles.ReferenceDataAmend },
+						canActivate: [MsalGuard, RoleGuard],
+						loadComponent: () =>
+							import('./required-standards-management/required-standards-management.component').then(
+								(m) => m.RequiredStandardsManagementComponent
+							),
+					},
+					{
+						path: ':category/:sectionNumber/:ref/delete',
+						data: { title: 'Delete required standard', mode: 'standard-delete', roles: Roles.ReferenceDataAmend },
+						canActivate: [MsalGuard, RoleGuard],
+						loadComponent: () =>
+							import('./required-standards-management/required-standards-management.component').then(
+								(m) => m.RequiredStandardsManagementComponent
+							),
+					},
+				],
+			},
+			{
 				path: ReferenceDataRoutes.TYPE,
 				loadComponent: () =>
 					import('@components/router-outlet/router-outlet.component').then((m) => m.RouterOutletComponent),

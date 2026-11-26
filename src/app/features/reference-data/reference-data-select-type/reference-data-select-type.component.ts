@@ -56,7 +56,10 @@ export class ReferenceDataSelectTypeComponent {
 					label: type.label ?? type.resourceKey.toString(),
 					value: type.resourceKey.toString(),
 				}))
-				.concat([{ label: 'Defects', value: 'defects' }])
+				.concat([
+					{ label: 'Defects', value: 'defects' },
+					{ label: 'Required standards', value: 'required-standards' },
+				])
 				.sort((a, b) => a.label.localeCompare(b.label))
 		)
 	);

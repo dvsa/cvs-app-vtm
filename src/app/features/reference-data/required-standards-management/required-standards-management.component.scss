@@ -1,0 +1,46 @@
+.buttons-and-search {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 15px 30px;
+}
+
+.search-controls,
+.add-delete-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 15px;
+}
+
+.add-delete-buttons {
+  margin-left: auto;
+}
+
+.search-field {
+  max-width: 100%;
+}
+
+.search-input {
+  display: flex;
+
+  .govuk-input {
+    width: 250px;
+    min-width: 0;
+  }
+}
+
+.search-btn {
+  background-color: #1d70b8;
+  color: #fff;
+  box-sizing: border-box;
+  border: 2px solid black;
+  border-left: 0;
+  height: 2.5rem;
+  box-shadow: none;
+}
+
+.search-controls .govuk-button,
+.add-delete-buttons .govuk-button {
+  margin-bottom: 0;
+}
