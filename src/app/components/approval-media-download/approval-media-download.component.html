@@ -1,6 +1,6 @@
 @if (testResult(); as testResult) {
   @if (viewMediaApplicable(testResult)) {
-    <td class="govuk-table__cell">Media:</td>
+    <td class="govuk-table__header">Media:</td>
     @if (canDownloadApprovalsMedia(testResult)) {
       <td id="media-download-link" class="govuk-table__cell">
         @if (hasMediaRetentionPeriodExpired(testResult)) {
