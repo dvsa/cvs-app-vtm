@@ -1,0 +1,17 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <h1 class="govuk-heading-l">Select a record</h1>
+    <p class="govuk-body">
+      Both a current and provisional record are associated with this system
+      number.
+    </p>
+    @if (records$ | async; as records) {
+      @for (
+        record of records;
+        track record.systemNumber + '#' + record.createdTimestamp
+      ) {
+        <app-search-result [searchResult]="record"></app-search-result>
+      }
+    }
+  </div>
+</div>

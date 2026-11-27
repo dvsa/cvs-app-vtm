@@ -1,15 +1,17 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 import { MsalGuard } from '@azure/msal-angular';
 import { TechRecordSearchSchema } from '@dvsa/cvs-type-definitions/types/v3/tech-record/get/search';
 import { RoleGuard } from '@guards/role-guard/roles.guard';
 import { RootRoutes } from '@models/routes.enum';
+import { provideMockStore } from '@ngrx/store/testing';
 import { HttpService } from '@services/http/http.service';
-import { of, throwError } from 'rxjs';
+import { filter, firstValueFrom, of, throwError } from 'rxjs';
 import { AppRoutingModule } from '../../../app-routing.module';
+import { SelectRecordComponent } from '../../../features/tech-record/select-record/select-record.component';
 
 @Component({ template: '' })
 class DestinationComponent {}
@@ -44,6 +46,7 @@ describe('system-number technical record route', () => {
 				{ provide: HttpService, useValue: { searchTechRecordBySystemNumber: search } },
 				{ provide: MsalGuard, useValue: auth },
 				{ provide: RoleGuard, useValue: role },
+				provideMockStore(),
 			],
 		});
 		router = TestBed.inject(Router);
@@ -65,7 +68,7 @@ describe('system-number technical record route', () => {
 	it.each([
 		[
 			'current',
-			[record('provisional', '2026-01-01'), record('current', '2024-01-01'), record('current', '2025-01-01')],
+			[record('archived', '2026-01-01'), record('current', '2024-01-01'), record('current', '2025-01-01')],
 			'2025-01-01',
 		],
 		[
@@ -81,10 +84,52 @@ describe('system-number technical record route', () => {
 		expect(router.url).toBe(`/tech-records/123/${timestamp}`);
 	});
 
+	it.each([
+		['current', '2024-01-01'],
+		['provisional', '2025-01-01'],
+	])('shows both active records and selects the %s record', async (_status, timestamp) => {
+		search.mockReturnValue(
+			of([
+				record('archived', '2026-01-01'),
+				record('provisional', '2025-01-01'),
+				record('current', '2024-01-01'),
+				record('current', '2027-01-01', '456'),
+			])
+		);
+		await harness.navigateByUrl('/tech-records/123', SelectRecordComponent);
+		expect(search).toHaveBeenCalledExactlyOnceWith('123');
+		expect(router.url).toBe('/tech-records/123');
+		const page = harness.routeNativeElement as HTMLElement;
+		expect(page.querySelector('h1')?.textContent).toContain('Select a record');
+		expect(page.textContent).toContain('Both a current and provisional record are associated with this system number');
+		const cards = page.querySelectorAll('app-search-result');
+		expect(cards).toHaveLength(2);
+		expect(page.textContent).toContain('CURRENT');
+		expect(page.textContent).toContain('PROVISIONAL');
+		const link = page.querySelector<HTMLAnchorElement>(`a[href="/tech-records/123/${timestamp}"]`);
+		expect(link).not.toBeNull();
+		const navigation = firstValueFrom(router.events.pipe(filter((event) => event instanceof NavigationEnd)));
+		link?.click();
+		await navigation;
+		expect(router.url).toBe(`/tech-records/123/${timestamp}`);
+	});
+
 	it('does not redirect to a record belonging to another system number', async () => {
 		search.mockReturnValue(of([record('current', '2026-01-01', '456'), record('archived', '2025-01-01')]));
 		await harness.navigateByUrl('/tech-records/123', DestinationComponent);
 		expect(router.url).toBe('/tech-records/123/2025-01-01');
+	});
+
+	it('updates the selection when navigating to another system number', async () => {
+		search
+			.mockReturnValueOnce(of([record('current', '2024-01-01'), record('provisional', '2025-01-01')]))
+			.mockReturnValueOnce(of([record('current', '2024-01-01', '456'), record('provisional', '2025-01-01', '456')]));
+		await harness.navigateByUrl('/tech-records/123', SelectRecordComponent);
+		await harness.navigateByUrl('/tech-records/456', SelectRecordComponent);
+		const page = harness.routeNativeElement as HTMLElement;
+		expect(page.querySelectorAll('app-search-result')).toHaveLength(2);
+		expect(page.querySelector('a[href="/tech-records/456/2024-01-01"]')).not.toBeNull();
+		expect(page.querySelector('a[href="/tech-records/123/2024-01-01"]')).toBeNull();
 	});
 
 	it('searches again when the same link is opened after a record is amended', async () => {
@@ -117,6 +162,12 @@ describe('system-number technical record route', () => {
 
 	it('shows an error rather than choosing an invalid timestamp', async () => {
 		search.mockReturnValue(of([record('current', 'invalid'), record('current', '2025-01-01')]));
+		await harness.navigateByUrl('/tech-records/123');
+		expect(router.url).toBe('/error');
+	});
+
+	it('shows an error rather than offering an invalid active record link', async () => {
+		search.mockReturnValue(of([record('current', '2025-01-01'), record('provisional', 'invalid')]));
 		await harness.navigateByUrl('/tech-records/123');
 		expect(router.url).toBe('/error');
 	});

@@ -5,10 +5,10 @@ import { MsalGuard } from '@azure/msal-angular';
 import { CancelEditTechGuard } from '@guards/cancel-edit-tech/cancel-edit-tech.guard';
 import { FeatureToggleGuard } from '@guards/feature-toggle-guard/feature-toggle.guard';
 import { RoleGuard } from '@guards/role-guard/roles.guard';
-import { techRecordRedirectGuard } from '@guards/tech-record-redirect/tech-record-redirect.guard';
 import { Roles } from '@models/roles.enum';
 import { RootRoutes } from '@models/routes.enum';
 import { LoginComponent } from './features/login/login.component';
+import { techRecordSelectionResolver } from './resolvers/tech-record-selection/tech-record-selection.resolver';
 import { techRecordViewResolver } from './resolvers/tech-record-view/tech-record-view.resolver';
 import { titleResolver } from './resolvers/title/title.resolver';
 import { AxlesService } from './services/axles/axles.service';
@@ -71,9 +71,11 @@ const routes: Routes = [
 			{
 				path: RootRoutes.TECH_RECORD_BY_SYSTEM_NUMBER,
 				pathMatch: 'full',
-				data: { title: 'Tech Record', roles: Roles.TechRecordView },
-				canActivate: [MsalGuard, RoleGuard, techRecordRedirectGuard],
-				children: [],
+				data: { title: 'Select a record', roles: Roles.TechRecordView },
+				canActivate: [MsalGuard, RoleGuard],
+				resolve: { records: techRecordSelectionResolver },
+				loadComponent: () =>
+					import('./features/tech-record/select-record/select-record.component').then((m) => m.SelectRecordComponent),
 			},
 			{
 				path: RootRoutes.CURRENT_TECH_RECORD,
