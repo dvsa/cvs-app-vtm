@@ -84,6 +84,47 @@ describe('system-number technical record route', () => {
 		expect(router.url).toBe(`/tech-records/123/${timestamp}`);
 	});
 
+	it.each(['current', 'provisional', 'archived'] as const)(
+		'bypasses selection and redirects to the newest record matching status=%s',
+		async (status) => {
+			search.mockReturnValue(
+				of([
+					record('current', '2026-01-01'),
+					record('provisional', '2027-01-01'),
+					record('archived', '2028-01-01'),
+					record(status, '2029-01-01'),
+					record(status, '2030-01-01', '456'),
+				])
+			);
+			await harness.navigateByUrl(`/tech-records/123?status=${status}`, DestinationComponent);
+			expect(search).toHaveBeenCalledExactlyOnceWith('123');
+			expect(router.url).toBe('/tech-records/123/2029-01-01');
+		}
+	);
+
+	it.each(['provisional', 'invalid', ''])(
+		'shows not found rather than falling back when status=%s has no matching record',
+		async (status) => {
+			search.mockReturnValue(of([record('current', '2026-01-01'), record('archived', '2025-01-01')]));
+			await harness.navigateByUrl(`/tech-records/123?status=${status}`);
+			expect(router.url).toBe('/not-found');
+		}
+	);
+
+	it('reruns selection when only the status query parameter changes', async () => {
+		search.mockReturnValue(of([record('current', '2024-01-01'), record('provisional', '2025-01-01')]));
+		await harness.navigateByUrl('/tech-records/123', SelectRecordComponent);
+		await harness.navigateByUrl('/tech-records/123?status=provisional', DestinationComponent);
+		expect(router.url).toBe('/tech-records/123/2025-01-01');
+		expect(search).toHaveBeenCalledTimes(2);
+	});
+
+	it('ignores invalid timestamps in records excluded by the status filter', async () => {
+		search.mockReturnValue(of([record('current', 'invalid'), record('provisional', '2025-01-01')]));
+		await harness.navigateByUrl('/tech-records/123?status=provisional', DestinationComponent);
+		expect(router.url).toBe('/tech-records/123/2025-01-01');
+	});
+
 	it.each([
 		['current', '2024-01-01'],
 		['provisional', '2025-01-01'],

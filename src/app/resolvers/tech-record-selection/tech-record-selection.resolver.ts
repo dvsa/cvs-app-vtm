@@ -11,6 +11,7 @@ export const techRecordSelectionResolver: ResolveFn<TechRecordSearchSchema[] | R
 	const router = inject(Router);
 	const httpService = inject(HttpService);
 	const systemNumber = route.paramMap.get('systemNumber');
+	const statusFilter = route.queryParamMap.get('status');
 
 	if (!systemNumber) {
 		return new RedirectCommand(router.createUrlTree([RootRoutes.NOT_FOUND]));
@@ -18,7 +19,11 @@ export const techRecordSelectionResolver: ResolveFn<TechRecordSearchSchema[] | R
 
 	return httpService.searchTechRecordBySystemNumber(systemNumber).pipe(
 		map((results) => {
-			const matchingRecords = results.filter((record) => record.systemNumber === systemNumber);
+			const matchingRecords = results.filter(
+				(record) =>
+					record.systemNumber === systemNumber &&
+					(statusFilter === null || record.techRecord_statusCode === statusFilter)
+			);
 			const activeRecords = matchingRecords.filter(
 				(record) =>
 					record.techRecord_statusCode === StatusCodes.CURRENT ||

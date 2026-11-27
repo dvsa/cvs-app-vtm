@@ -74,6 +74,7 @@ const routes: Routes = [
 				data: { title: 'Select a record', roles: Roles.TechRecordView },
 				canActivate: [MsalGuard, RoleGuard],
 				resolve: { records: techRecordSelectionResolver },
+				runGuardsAndResolvers: 'paramsOrQueryParamsChange',
 				loadComponent: () =>
 					import('./features/tech-record/select-record/select-record.component').then((m) => m.SelectRecordComponent),
 			},
