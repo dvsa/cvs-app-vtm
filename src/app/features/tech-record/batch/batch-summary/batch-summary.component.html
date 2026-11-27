@@ -104,12 +104,8 @@
             <a
               class="govuk-link"
               target="_blank"
-              [routerLink]="[
-                '/',
-                'tech-records',
-                vehicle.systemNumber,
-                vehicle.createdTimestamp,
-              ]"
+              [routerLink]="['/', 'tech-records', vehicle.systemNumber]"
+              [queryParams]="{ status: vehicle.status }"
               [id]="`vehicle-${$index}-view-link`"
             >
               View (opens in new tab)

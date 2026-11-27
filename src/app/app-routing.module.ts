@@ -8,6 +8,7 @@ import { RoleGuard } from '@guards/role-guard/roles.guard';
 import { Roles } from '@models/roles.enum';
 import { RootRoutes } from '@models/routes.enum';
 import { LoginComponent } from './features/login/login.component';
+import { techRecordSelectionResolver } from './resolvers/tech-record-selection/tech-record-selection.resolver';
 import { techRecordViewResolver } from './resolvers/tech-record-view/tech-record-view.resolver';
 import { titleResolver } from './resolvers/title/title.resolver';
 import { AxlesService } from './services/axles/axles.service';
@@ -68,6 +69,16 @@ const routes: Routes = [
 				loadChildren: () => import('./features/test-records/amend/amend-test-records.routes').then((m) => m.routes),
 			},
 			{
+				path: RootRoutes.TECH_RECORD_BY_SYSTEM_NUMBER,
+				pathMatch: 'full',
+				data: { title: 'Select a record', roles: Roles.TechRecordView },
+				canActivate: [MsalGuard, RoleGuard],
+				resolve: { records: techRecordSelectionResolver },
+				runGuardsAndResolvers: 'paramsOrQueryParamsChange',
+				loadComponent: () =>
+					import('./features/tech-record/select-record/select-record.component').then((m) => m.SelectRecordComponent),
+			},
+			{
 				path: RootRoutes.CURRENT_TECH_RECORD,
 				data: { title: 'Tech Record', roles: Roles.TechRecordView },
 				canActivate: [MsalGuard, RoleGuard],
@@ -96,6 +107,12 @@ const routes: Routes = [
 					import('./features/accessibility-statement/accessibility-statement.component').then(
 						(m) => m.AccessibilityStatementComponent
 					),
+			},
+			{
+				path: RootRoutes.NOT_FOUND,
+				pathMatch: 'full',
+				loadComponent: () =>
+					import('@core/components/page-not-found/page-not-found.component').then((m) => m.PageNotFoundComponent),
 			},
 			{
 				path: RootRoutes.ERROR,
